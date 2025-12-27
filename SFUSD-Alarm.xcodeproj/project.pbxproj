@@ -20,6 +20,7 @@
 		A11111110000000000000011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000011 /* Assets.xcassets */; };
 		A11111110000000000000012 /* OverrideModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000012 /* OverrideModels.swift */; };
 		A11111110000000000000013 /* OverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000013 /* OverrideStore.swift */; };
+		A11111110000000000000014 /* WeeklyRuleEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000014 /* WeeklyRuleEditView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		A00000000000000000000011 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A00000000000000000000012 /* OverrideModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverrideModels.swift; sourceTree = "<group>"; };
 		A00000000000000000000013 /* OverrideStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverrideStore.swift; sourceTree = "<group>"; };
+		A00000000000000000000014 /* WeeklyRuleEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRuleEditView.swift; sourceTree = "<group>"; };
 		B00000000000000000000001 /* SFUSD-Alarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SFUSD-Alarm.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -97,6 +99,7 @@
 				A00000000000000000000008 /* AlarmEditView.swift */,
 				A00000000000000000000009 /* SoundPickerView.swift */,
 				A00000000000000000000010 /* CalendarView.swift */,
+				A00000000000000000000014 /* WeeklyRuleEditView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -215,6 +218,7 @@
 				A11111110000000000000010 /* CalendarView.swift in Sources */,
 				A11111110000000000000012 /* OverrideModels.swift in Sources */,
 				A11111110000000000000013 /* OverrideStore.swift in Sources */,
+				A11111110000000000000014 /* WeeklyRuleEditView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
