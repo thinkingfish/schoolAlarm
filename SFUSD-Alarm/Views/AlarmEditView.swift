@@ -32,6 +32,7 @@ struct AlarmEditView: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var alarmStore: AlarmStore
     @EnvironmentObject var calendarService: CalendarService
+    @EnvironmentObject var overrideStore: OverrideStore
 
     @State private var selectedTime: Date
     @State private var label: String
@@ -181,9 +182,12 @@ struct AlarmEditView: View {
             alarmStore.addAlarm(alarm)
         }
 
-        // Schedule notifications
-        let schoolDays = calendarService.upcomingSchoolDays()
-        NotificationManager.shared.scheduleAlarms(for: alarm, on: schoolDays)
+        // Schedule notifications using new override-aware method
+        NotificationManager.shared.rescheduleAllAlarms(
+            alarmStore: alarmStore,
+            calendarService: calendarService,
+            overrideStore: overrideStore
+        )
     }
 
     private func deleteAlarm() {
