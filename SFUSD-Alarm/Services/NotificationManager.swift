@@ -94,6 +94,77 @@ class NotificationManager: ObservableObject {
         updatePendingCount()
     }
 
+    /// Schedule alarms for upcoming school days, respecting overrides
+    /// - Parameters:
+    ///   - baseAlarm: The base alarm (optional)
+    ///   - schoolDays: List of upcoming school days
+    ///   - overrideStore: The override store for resolution
+    func scheduleAlarmsWithOverrides(
+        baseAlarm: Alarm?,
+        on schoolDays: [Date],
+        overrideStore: OverrideStore
+    ) {
+        // Cancel all existing alarm notifications first
+        cancelAllNotifications()
+
+        guard overrideStore.allAlarmsEnabled else {
+            updatePendingCount()
+            return
+        }
+
+        let center = UNUserNotificationCenter.current()
+        let calendar = Calendar.current
+
+        var scheduledCount = 0
+
+        for schoolDay in schoolDays {
+            guard scheduledCount < maxNotifications else { break }
+
+            // Get effective alarm time using override resolution
+            guard let alarmTime = overrideStore.effectiveAlarmTime(for: schoolDay, baseAlarm: baseAlarm) else {
+                continue  // Skip this day (disabled or no alarm)
+            }
+
+            let dateComponents = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: alarmTime)
+
+            let content = UNMutableNotificationContent()
+            content.title = baseAlarm?.label.isEmpty == false ? baseAlarm!.label : "School Day Alarm"
+            content.body = "Time to get ready for school!"
+            content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "\(baseAlarm?.sound.systemSoundName ?? "alarm").caf"))
+            content.badge = 1
+            content.userInfo = [
+                "alarmId": baseAlarm?.id.uuidString ?? "override",
+                "schoolDay": schoolDay.timeIntervalSince1970
+            ]
+
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+            let identifier = "alarm_\(schoolDay.timeIntervalSince1970)"
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+
+            center.add(request) { error in
+                if let error = error {
+                    print("Failed to schedule notification: \(error)")
+                }
+            }
+
+            scheduledCount += 1
+        }
+
+        updatePendingCount()
+    }
+
+    /// Reschedule all alarms (call when any override or alarm changes)
+    @MainActor
+    func rescheduleAllAlarms(
+        alarmStore: AlarmStore,
+        calendarService: CalendarService,
+        overrideStore: OverrideStore
+    ) {
+        let schoolDays = calendarService.upcomingSchoolDays()
+        let baseAlarm = alarmStore.alarms.first  // Single base alarm model
+        scheduleAlarmsWithOverrides(baseAlarm: baseAlarm, on: schoolDays, overrideStore: overrideStore)
+    }
+
     func updatePendingCount() {
         UNUserNotificationCenter.current().getPendingNotificationRequests { [weak self] requests in
             DispatchQueue.main.async {
