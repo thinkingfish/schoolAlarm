@@ -6,12 +6,14 @@ struct SFUSD_AlarmApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var alarmStore = AlarmStore()
     @StateObject private var calendarService = CalendarService()
+    @StateObject private var overrideStore = OverrideStore()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(alarmStore)
                 .environmentObject(calendarService)
+                .environmentObject(overrideStore)
                 .onAppear {
                     NotificationManager.shared.requestAuthorization()
                     Task {
