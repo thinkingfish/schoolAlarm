@@ -2,7 +2,11 @@ import SwiftUI
 
 struct CalendarView: View {
     @EnvironmentObject var calendarService: CalendarService
+    @EnvironmentObject var overrideStore: OverrideStore
+    @EnvironmentObject var alarmStore: AlarmStore
+
     @State private var currentMonth: Date = Date()
+    @State private var selectedDateForOverride: Date?
 
     private let calendar = Calendar.current
     private let daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"]
@@ -56,11 +60,18 @@ struct CalendarView: View {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 8) {
                     ForEach(daysInMonth, id: \.self) { date in
                         if let date = date {
-                            DayCell(
+                            DayCellWithOverride(
                                 date: date,
                                 isSchoolDay: calendarService.isSchoolDay(date),
                                 isToday: calendar.isDateInToday(date),
-                                isCurrentMonth: isInCurrentMonth(date)
+                                isCurrentMonth: isInCurrentMonth(date),
+                                activeLayer: overrideStore.activeLayer(for: date),
+                                isDisabled: isDateDisabled(date),
+                                onTap: {
+                                    if calendarService.isSchoolDay(date) {
+                                        selectedDateForOverride = date
+                                    }
+                                }
                             )
                         } else {
                             Text("")
@@ -71,9 +82,11 @@ struct CalendarView: View {
                 .padding(.horizontal, 8)
 
                 // Legend
-                HStack(spacing: 20) {
-                    LegendItem(color: .green, text: "School Day")
-                    LegendItem(color: .red, text: "No School")
+                HStack(spacing: 16) {
+                    LegendItem(color: .orange, text: "Base")
+                    LegendItem(color: .blue, text: "Weekly")
+                    LegendItem(color: .green, text: "One-Time")
+                    LegendItem(color: .gray, text: "No School")
                 }
                 .padding(.top)
 
@@ -114,6 +127,44 @@ struct CalendarView: View {
         .navigationTitle("School Calendar")
         .navigationBarTitleDisplayMode(.inline)
         .preferredColorScheme(.dark)
+        .sheet(item: $selectedDateForOverride) { date in
+            let existingOverride = overrideStore.dateOverride(for: date)
+            if let override = existingOverride {
+                DateOverrideEditView(
+                    mode: .edit(override),
+                    onSave: { updatedOverride in
+                        overrideStore.updateDateOverride(updatedOverride)
+                        rescheduleAllAlarms()
+                    },
+                    onDelete: {
+                        overrideStore.deleteDateOverride(override)
+                        rescheduleAllAlarms()
+                    }
+                )
+            } else {
+                DateOverrideEditView(
+                    mode: .addForDate(date),
+                    onSave: { newOverride in
+                        overrideStore.addDateOverride(newOverride)
+                        rescheduleAllAlarms()
+                    }
+                )
+            }
+        }
+    }
+
+    private func isDateDisabled(_ date: Date) -> Bool {
+        guard calendarService.isSchoolDay(date) else { return false }
+        let baseAlarm = alarmStore.alarms.first
+        return overrideStore.effectiveAlarmTime(for: date, baseAlarm: baseAlarm) == nil
+    }
+
+    private func rescheduleAllAlarms() {
+        NotificationManager.shared.rescheduleAllAlarms(
+            alarmStore: alarmStore,
+            calendarService: calendarService,
+            overrideStore: overrideStore
+        )
     }
 
     private var monthYearString: String {
@@ -173,11 +224,19 @@ struct CalendarView: View {
     }
 }
 
-struct DayCell: View {
+// Make Date conform to Identifiable for sheet binding
+extension Date: Identifiable {
+    public var id: TimeInterval { timeIntervalSince1970 }
+}
+
+struct DayCellWithOverride: View {
     let date: Date
     let isSchoolDay: Bool
     let isToday: Bool
     let isCurrentMonth: Bool
+    let activeLayer: AlarmLayer
+    let isDisabled: Bool
+    let onTap: () -> Void
 
     private var dayNumber: String {
         let formatter = DateFormatter()
@@ -186,18 +245,43 @@ struct DayCell: View {
     }
 
     var body: some View {
-        ZStack {
-            if isToday {
-                Circle()
-                    .fill(Color.orange)
-                    .frame(width: 36, height: 36)
-            }
+        Button(action: onTap) {
+            ZStack {
+                // Ring for school days
+                if isSchoolDay && isCurrentMonth {
+                    Circle()
+                        .stroke(ringColor, lineWidth: 2)
+                        .frame(width: 36, height: 36)
+                        .opacity(isDisabled ? 0.4 : 1.0)
+                }
 
-            Text(dayNumber)
-                .font(.system(size: 16, weight: isToday ? .bold : .regular))
-                .foregroundColor(textColor)
+                // Today indicator (filled circle)
+                if isToday {
+                    Circle()
+                        .fill(Color.orange)
+                        .frame(width: 32, height: 32)
+                }
+
+                Text(dayNumber)
+                    .font(.system(size: 16, weight: isToday ? .bold : .regular))
+                    .foregroundColor(textColor)
+                    .strikethrough(isDisabled && isSchoolDay && isCurrentMonth, color: .red)
+            }
+            .frame(height: 40)
         }
-        .frame(height: 40)
+        .buttonStyle(.plain)
+        .disabled(!isSchoolDay)
+    }
+
+    private var ringColor: Color {
+        if isDisabled {
+            return .red.opacity(0.5)
+        }
+        switch activeLayer {
+        case .base: return .orange
+        case .weekly: return .blue
+        case .oneTime: return .green
+        }
     }
 
     private var textColor: Color {
@@ -206,9 +290,16 @@ struct DayCell: View {
         } else if !isCurrentMonth {
             return .gray.opacity(0.5)
         } else if isSchoolDay {
-            return .green
+            if isDisabled {
+                return .gray
+            }
+            switch activeLayer {
+            case .base: return .orange
+            case .weekly: return .blue
+            case .oneTime: return .green
+            }
         } else {
-            return .red
+            return .gray
         }
     }
 }
@@ -282,5 +373,7 @@ struct UpcomingHolidaysSection: View {
     NavigationStack {
         CalendarView()
             .environmentObject(CalendarService())
+            .environmentObject(OverrideStore())
+            .environmentObject(AlarmStore())
     }
 }
