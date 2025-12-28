@@ -51,7 +51,7 @@ For the alarm to work reliably, configure these settings:
 
 Due to iOS restrictions on third-party apps:
 
-- **Notification Sound Duration**: Each notification sound is limited to ~30 seconds. The app works around this by chaining 3 notifications 30 seconds apart.
+- **Notification Sound Duration**: Each notification sound is limited to ~30 seconds. The app works around this by chaining 3 notifications 30 seconds apart. Acknowledging the current notification cancels subsequent notifications for the same event.
 - **Action Buttons**: Snooze/Dismiss buttons require a **long-press** on the notification to reveal. This is an iOS design decision that cannot be changed.
 - **64 Notification Limit**: iOS allows a maximum of 64 scheduled notifications. With 3 notifications per alarm, this means ~20 school days can be scheduled ahead. The app uses background refresh to reschedule as needed.
 - **No Full-Screen Alarm**: Unlike Apple's Clock app, third-party apps cannot display a full-screen alarm interface on the lock screen.
