@@ -63,3 +63,6 @@ playground.xcworkspace
 .env.*
 credentials.json
 secrets.json
+
+# Claude Code
+.claude/
