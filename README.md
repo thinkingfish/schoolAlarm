@@ -53,8 +53,10 @@ For the alarm to work reliably, configure these settings:
 ### App Settings
 
 1. **Create a base alarm**: Set your default wake-up time that applies to all school days
-2. **Add weekly rules** (optional): Override the base time for specific days of the week
-3. **Add one-time overrides** (optional): Skip or change alarm time for specific dates
+2. **Add weekly rules** (optional): Create or Override the base time for specific days of the week
+3. **Add one-time overrides** (optional): Create or Override alarm time for specific dates
+
+The priority of these settings goes 3>2>1, so the highest applicable setting wins. It's also OK to not have a base alarm if you only need it for specific weekday(s) or dates.
 
 ## iOS Limitations
 
