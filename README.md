@@ -1,6 +1,13 @@
+![SchoolAlarm Logo](assets/SchoolAlarm.png)
+
 # SchoolAlarm
 
 A smart alarm clock app for SFUSD (San Francisco Unified School District) families. The app automatically schedules alarms only on school days by syncing with the official SFUSD calendar.
+
+<p align="center">
+  <img src="assets/main.jpg" width="45%" alt="Main View">
+  <img src="assets/calendar.jpg" width="45%" alt="Calendar View">
+</p>
 
 ## Features
 
