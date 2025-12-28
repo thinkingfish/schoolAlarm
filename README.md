@@ -113,4 +113,4 @@ These features are compiled out in Release builds.
 
 ## License
 
-Private project for personal use.
+MIT License. See [LICENSE](LICENSE) for details.
