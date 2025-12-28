@@ -117,9 +117,11 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         }
 
         // Cancel remaining chained test notifications
+        #if DEBUG
         if let testTimestamp = userInfo["testTimestamp"] as? TimeInterval {
             NotificationManager.shared.cancelTestChain(testTimestamp: testTimestamp)
         }
+        #endif
 
         switch response.actionIdentifier {
         case NotificationManager.snoozeActionIdentifier:
