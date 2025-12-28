@@ -1,0 +1,449 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		20BC29AC2F00857800ABE913 /* funny_ring.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BC29AB2F00857800ABE913 /* funny_ring.caf */; };
+		20BC29AD2F00857800ABE913 /* click_ring.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BC29AA2F00857800ABE913 /* click_ring.caf */; };
+		20BC29B12F01015800ABE913 /* kid_shouting_1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BC29AF2F01015800ABE913 /* kid_shouting_1.caf */; };
+		20BC29B22F01015800ABE913 /* kid_shouting_2.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BC29B02F01015800ABE913 /* kid_shouting_2.caf */; };
+		A11111110000000000000001 /* SchoolAlarmApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000001 /* SchoolAlarmApp.swift */; };
+		A11111110000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000002 /* ContentView.swift */; };
+		A11111110000000000000003 /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* Alarm.swift */; };
+		A11111110000000000000004 /* SchoolCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000004 /* SchoolCalendar.swift */; };
+		A11111110000000000000005 /* ICSParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000005 /* ICSParser.swift */; };
+		A11111110000000000000006 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000006 /* CalendarService.swift */; };
+		A11111110000000000000007 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000007 /* NotificationManager.swift */; };
+		A11111110000000000000008 /* AlarmEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000008 /* AlarmEditView.swift */; };
+		A11111110000000000000010 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000010 /* CalendarView.swift */; };
+		A11111110000000000000011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000011 /* Assets.xcassets */; };
+		A11111110000000000000012 /* OverrideModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000012 /* OverrideModels.swift */; };
+		A11111110000000000000013 /* OverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000013 /* OverrideStore.swift */; };
+		A11111110000000000000014 /* WeeklyRuleEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000014 /* WeeklyRuleEditView.swift */; };
+		A11111110000000000000015 /* DateOverrideEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000015 /* DateOverrideEditView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		20BC29AA2F00857800ABE913 /* click_ring.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = click_ring.caf; sourceTree = "<group>"; };
+		20BC29AB2F00857800ABE913 /* funny_ring.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = funny_ring.caf; sourceTree = "<group>"; };
+		20BC29AE2F00985900ABE913 /* SchoolAlarm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SchoolAlarm.entitlements; sourceTree = "<group>"; };
+		20BC29AF2F01015800ABE913 /* kid_shouting_1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = kid_shouting_1.caf; sourceTree = "<group>"; };
+		20BC29B02F01015800ABE913 /* kid_shouting_2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = kid_shouting_2.caf; sourceTree = "<group>"; };
+		A00000000000000000000001 /* SchoolAlarmApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolAlarmApp.swift; sourceTree = "<group>"; };
+		A00000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A00000000000000000000003 /* Alarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
+		A00000000000000000000004 /* SchoolCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolCalendar.swift; sourceTree = "<group>"; };
+		A00000000000000000000005 /* ICSParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICSParser.swift; sourceTree = "<group>"; };
+		A00000000000000000000006 /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		A00000000000000000000007 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		A00000000000000000000008 /* AlarmEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmEditView.swift; sourceTree = "<group>"; };
+		A00000000000000000000010 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		A00000000000000000000011 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A00000000000000000000012 /* OverrideModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverrideModels.swift; sourceTree = "<group>"; };
+		A00000000000000000000013 /* OverrideStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverrideStore.swift; sourceTree = "<group>"; };
+		A00000000000000000000014 /* WeeklyRuleEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRuleEditView.swift; sourceTree = "<group>"; };
+		A00000000000000000000015 /* DateOverrideEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateOverrideEditView.swift; sourceTree = "<group>"; };
+		B00000000000000000000001 /* SchoolAlarm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SchoolAlarm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C00000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D00000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				D00000000000000000000002 /* SchoolAlarm */,
+				D00000000000000000000010 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D00000000000000000000002 /* SchoolAlarm */ = {
+			isa = PBXGroup;
+			children = (
+				20BC29AE2F00985900ABE913 /* SchoolAlarm.entitlements */,
+				D00000000000000000000003 /* App */,
+				D00000000000000000000004 /* Models */,
+				D00000000000000000000005 /* Views */,
+				D00000000000000000000006 /* Services */,
+				D00000000000000000000007 /* Utilities */,
+				D00000000000000000000008 /* Resources */,
+			);
+			path = SchoolAlarm;
+			sourceTree = "<group>";
+		};
+		D00000000000000000000003 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000001 /* SchoolAlarmApp.swift */,
+				A00000000000000000000002 /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D00000000000000000000004 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000003 /* Alarm.swift */,
+				A00000000000000000000012 /* OverrideModels.swift */,
+				A00000000000000000000013 /* OverrideStore.swift */,
+				A00000000000000000000004 /* SchoolCalendar.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D00000000000000000000005 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000008 /* AlarmEditView.swift */,
+				A00000000000000000000010 /* CalendarView.swift */,
+				A00000000000000000000014 /* WeeklyRuleEditView.swift */,
+				A00000000000000000000015 /* DateOverrideEditView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D00000000000000000000006 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000006 /* CalendarService.swift */,
+				A00000000000000000000007 /* NotificationManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		D00000000000000000000007 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000005 /* ICSParser.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		D00000000000000000000008 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				20BC29AF2F01015800ABE913 /* kid_shouting_1.caf */,
+				20BC29B02F01015800ABE913 /* kid_shouting_2.caf */,
+				20BC29AA2F00857800ABE913 /* click_ring.caf */,
+				20BC29AB2F00857800ABE913 /* funny_ring.caf */,
+				A00000000000000000000011 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		D00000000000000000000010 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B00000000000000000000001 /* SchoolAlarm.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E00000000000000000000001 /* SchoolAlarm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F00000000000000000000003 /* Build configuration list for PBXNativeTarget "SchoolAlarm" */;
+			buildPhases = (
+				E00000000000000000000002 /* Sources */,
+				C00000000000000000000001 /* Frameworks */,
+				E00000000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SchoolAlarm;
+			productName = SchoolAlarm;
+			productReference = B00000000000000000000001 /* SchoolAlarm.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E00000000000000000000010 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					E00000000000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = F00000000000000000000001 /* Build configuration list for PBXProject "SchoolAlarm" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D00000000000000000000001;
+			productRefGroup = D00000000000000000000010 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E00000000000000000000001 /* SchoolAlarm */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E00000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20BC29AC2F00857800ABE913 /* funny_ring.caf in Resources */,
+				20BC29B12F01015800ABE913 /* kid_shouting_1.caf in Resources */,
+				20BC29B22F01015800ABE913 /* kid_shouting_2.caf in Resources */,
+				20BC29AD2F00857800ABE913 /* click_ring.caf in Resources */,
+				A11111110000000000000011 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E00000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A11111110000000000000001 /* SchoolAlarmApp.swift in Sources */,
+				A11111110000000000000002 /* ContentView.swift in Sources */,
+				A11111110000000000000003 /* Alarm.swift in Sources */,
+				A11111110000000000000004 /* SchoolCalendar.swift in Sources */,
+				A11111110000000000000005 /* ICSParser.swift in Sources */,
+				A11111110000000000000006 /* CalendarService.swift in Sources */,
+				A11111110000000000000007 /* NotificationManager.swift in Sources */,
+				A11111110000000000000008 /* AlarmEditView.swift in Sources */,
+				A11111110000000000000010 /* CalendarView.swift in Sources */,
+				A11111110000000000000012 /* OverrideModels.swift in Sources */,
+				A11111110000000000000013 /* OverrideStore.swift in Sources */,
+				A11111110000000000000014 /* WeeklyRuleEditView.swift in Sources */,
+				A11111110000000000000015 /* DateOverrideEditView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F00000000000000000000010 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 2PG4Z3FFS5;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F00000000000000000000011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2PG4Z3FFS5;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F00000000000000000000020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = SchoolAlarm/SchoolAlarm.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SchoolAlarm/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.schoolalarm.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F00000000000000000000021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = SchoolAlarm/SchoolAlarm.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SchoolAlarm/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.schoolalarm.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F00000000000000000000001 /* Build configuration list for PBXProject "SchoolAlarm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F00000000000000000000010 /* Debug */,
+				F00000000000000000000011 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F00000000000000000000003 /* Build configuration list for PBXNativeTarget "SchoolAlarm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F00000000000000000000020 /* Debug */,
+				F00000000000000000000021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E00000000000000000000010 /* Project object */;
+}

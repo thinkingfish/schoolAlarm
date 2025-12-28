@@ -4,7 +4,9 @@
       "Skill(superpowers:brainstorming)",
       "Skill(superpowers:brainstorming:*)",
       "Bash(mkdir:*)",
-      "Bash(xcodebuild:*)"
+      "Bash(xcodebuild:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
