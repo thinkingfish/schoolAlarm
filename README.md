@@ -10,9 +10,11 @@ A smart alarm clock app for SFUSD (San Francisco Unified School District) famili
   - Weekly rules (e.g., "7:30 AM every Wednesday")
   - One-time date overrides (e.g., "skip alarm on Dec 20")
 - **Chained Notifications**: Each alarm fires 3 notifications 30 seconds apart (~90 seconds total) to help heavy sleepers
-- **Snooze Support**: 5-minute snooze for real alarms (15 seconds in debug builds for testing)
+- **Snooze Support**: 5-minute snooze for normal alarms (15 seconds in debug builds for testing)
 - **Custom Alarm Sounds**: Bundled sounds including kid-friendly options
 - **Background Refresh**: Automatically reschedules notifications when needed
+
+Note: because alarms are implemented as Notifications (before iOS 26 no Alarm APIs are provided to 3rdparty developers), it has a number of limitations in terms of functionality and configuration, read on to understand them.
 
 ## Requirements
 
