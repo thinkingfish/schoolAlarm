@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct CalendarView: View {
+    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var calendarService: CalendarService
     @EnvironmentObject var overrideStore: OverrideStore
     @EnvironmentObject var alarmStore: AlarmStore
@@ -18,7 +19,7 @@ struct CalendarView: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            VStack(spacing: 20) {
+            VStack(spacing: 12) {
                 // Month navigation
                 HStack {
                     Button {
@@ -58,9 +59,10 @@ struct CalendarView: View {
                             .frame(maxWidth: .infinity)
                     }
                 }
+                .padding(.bottom, -4)
 
                 // Calendar grid
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 8) {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 4) {
                     ForEach(Array(daysInMonth.enumerated()), id: \.offset) { index, date in
                         if let date = date {
                             #if DEBUG
@@ -95,7 +97,7 @@ struct CalendarView: View {
                             #endif
                         } else {
                             Color.clear
-                                .frame(width: 36, height: 40)
+                                .frame(width: 36, height: 44)
                         }
                     }
                 }
@@ -125,7 +127,9 @@ struct CalendarView: View {
                     LegendItem(color: .green, text: "One-Time", style: .oneTime)
                     LegendItem(color: .gray, text: "No School", style: .noSchool)
                 }
-                .padding(.top)
+                .padding(.top, 12)
+
+                Spacer().frame(height: 8)
 
                 // Upcoming holidays
                 UpcomingHolidaysSection(events: upcomingHolidays)
@@ -163,6 +167,22 @@ struct CalendarView: View {
         }
         .navigationTitle("SFUSD Calendar (2025-2026)")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    HStack(spacing: 4) {
+                        Text("↩︎")
+                            .font(.title2)
+                        Text("Back")
+                            .font(.body)
+                    }
+                    .foregroundColor(.white)
+                }
+            }
+        }
         .preferredColorScheme(.dark)
         .sheet(item: $selectedDateForOverride) { identifiableDate in
             let date = identifiableDate.date
@@ -360,7 +380,7 @@ struct DayCellWithOverride: View {
                 }
                 #endif
             }
-            .frame(height: 50)
+            .frame(height: 44)
         }
         .buttonStyle(.plain)
         .disabled(!isSchoolDay)
