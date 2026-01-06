@@ -50,6 +50,7 @@ struct Alarm: Identifiable, Codable, Equatable {
         case clickRing = "click_ring"
         case kidShouting1 = "kid_shouting_1"
         case kidShouting2 = "kid_shouting_2"
+        case reveille = "reveille"
 
         var displayName: String {
             switch self {
@@ -57,6 +58,7 @@ struct Alarm: Identifiable, Codable, Equatable {
             case .clickRing: return "Click Ring"
             case .kidShouting1: return "Kid Shouting 1"
             case .kidShouting2: return "Kid Shouting 2"
+            case .reveille: return "Reveille"
             }
         }
     }

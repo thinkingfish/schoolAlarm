@@ -11,6 +11,7 @@
 		20BC29AD2F00857800ABE913 /* click_ring.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BC29AA2F00857800ABE913 /* click_ring.caf */; };
 		20BC29B12F01015800ABE913 /* kid_shouting_1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BC29AF2F01015800ABE913 /* kid_shouting_1.caf */; };
 		20BC29B22F01015800ABE913 /* kid_shouting_2.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BC29B02F01015800ABE913 /* kid_shouting_2.caf */; };
+		20BEF3CA2F0CA0EE0059D190 /* reveille.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BEF3C92F0CA0EE0059D190 /* reveille.caf */; };
 		A11111110000000000000001 /* SchoolAlarmApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000001 /* SchoolAlarmApp.swift */; };
 		A11111110000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000002 /* ContentView.swift */; };
 		A11111110000000000000003 /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* Alarm.swift */; };
@@ -33,6 +34,7 @@
 		20BC29AE2F00985900ABE913 /* SchoolAlarm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SchoolAlarm.entitlements; sourceTree = "<group>"; };
 		20BC29AF2F01015800ABE913 /* kid_shouting_1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = kid_shouting_1.caf; sourceTree = "<group>"; };
 		20BC29B02F01015800ABE913 /* kid_shouting_2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = kid_shouting_2.caf; sourceTree = "<group>"; };
+		20BEF3C92F0CA0EE0059D190 /* reveille.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = reveille.caf; sourceTree = "<group>"; };
 		A00000000000000000000001 /* SchoolAlarmApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolAlarmApp.swift; sourceTree = "<group>"; };
 		A00000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A00000000000000000000003 /* Alarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 		D00000000000000000000008 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				20BEF3C92F0CA0EE0059D190 /* reveille.caf */,
 				20BC29AF2F01015800ABE913 /* kid_shouting_1.caf */,
 				20BC29B02F01015800ABE913 /* kid_shouting_2.caf */,
 				20BC29AA2F00857800ABE913 /* click_ring.caf */,
@@ -213,6 +216,7 @@
 				20BC29B12F01015800ABE913 /* kid_shouting_1.caf in Resources */,
 				20BC29B22F01015800ABE913 /* kid_shouting_2.caf in Resources */,
 				20BC29AD2F00857800ABE913 /* click_ring.caf in Resources */,
+				20BEF3CA2F0CA0EE0059D190 /* reveille.caf in Resources */,
 				A11111110000000000000011 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

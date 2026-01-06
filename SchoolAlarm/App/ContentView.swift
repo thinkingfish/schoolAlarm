@@ -198,9 +198,23 @@ struct NextAlarmSection: View {
     private var nextAlarmInfo: (Date, Date, AlarmLayer)? {
         let baseAlarm = alarmStore.alarms.first
         let schoolDays = calendarService.upcomingSchoolDays()
+        let now = Date()
+        let calendar = Calendar.current
 
         for day in schoolDays {
             if let time = overrideStore.effectiveAlarmTime(for: day, baseAlarm: baseAlarm) {
+                // Combine the school day date with the alarm time
+                let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
+                if let alarmDateTime = calendar.date(bySettingHour: timeComponents.hour ?? 0,
+                                                      minute: timeComponents.minute ?? 0,
+                                                      second: 0,
+                                                      of: day) {
+                    // Skip if this alarm time has already passed
+                    if alarmDateTime <= now {
+                        continue
+                    }
+                }
+
                 let layer = overrideStore.activeLayer(for: day)
                 return (day, time, layer)
             }
