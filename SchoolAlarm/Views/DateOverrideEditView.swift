@@ -84,7 +84,7 @@ struct SchoolDayDatePicker: View {
                 }
             }
         }
-        .onChange(of: selectedDate) { newDate in
+        .onChange(of: selectedDate) { _, newDate in
             // If selected date is in a different month, update the view
             if !calendar.isDate(newDate, equalTo: currentMonth, toGranularity: .month) {
                 currentMonth = newDate

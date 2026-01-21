@@ -98,9 +98,6 @@ struct AlarmEditView: View {
                             .tint(.gray)
                         }
                         .listRowBackground(Color(white: 0.15))
-                        .onChange(of: selectedSound) { newSound in
-                            NotificationManager.shared.playPreviewSound(for: newSound)
-                        }
 
                         // Snooze
                         Toggle("Snooze", isOn: $snoozeEnabled)
@@ -154,9 +151,6 @@ struct AlarmEditView: View {
             } message: {
                 Text("Are you sure you want to delete this alarm?")
             }
-            .onDisappear {
-                NotificationManager.shared.stopPreviewSound()
-            }
         }
     }
 
@@ -181,8 +175,8 @@ struct AlarmEditView: View {
             alarmStore.addAlarm(alarm)
         }
 
-        // Schedule notifications using new override-aware method
-        NotificationManager.shared.rescheduleAllAlarms(
+        // Schedule alarms via AlarmKit
+        AlarmKitManager.shared.rescheduleAllAlarms(
             alarmStore: alarmStore,
             calendarService: calendarService,
             overrideStore: overrideStore

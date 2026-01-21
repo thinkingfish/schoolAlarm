@@ -49,13 +49,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-	</array>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>com.schoolalarm.refresh</string>
-	</array>
+	<key>NSAlarmKitUsageDescription</key>
+	<string>SchoolAlarm needs alarm access to wake you up on school days, even when your phone is on silent or Do Not Disturb.</string>
 </dict>
 </plist>

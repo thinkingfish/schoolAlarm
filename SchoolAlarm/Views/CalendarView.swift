@@ -8,9 +8,6 @@ struct CalendarView: View {
 
     @State private var currentMonth: Date = Date()
     @State private var selectedDateForOverride: IdentifiableDate?
-    #if DEBUG
-    @State private var notificationCountsByDate: [Date: Int] = [:]
-    #endif
 
     private let calendar = Calendar.current
     private let daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"]
@@ -65,22 +62,6 @@ struct CalendarView: View {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 4) {
                     ForEach(Array(daysInMonth.enumerated()), id: \.offset) { index, date in
                         if let date = date {
-                            #if DEBUG
-                            DayCellWithOverride(
-                                date: date,
-                                isSchoolDay: calendarService.isSchoolDay(date),
-                                isToday: calendar.isDateInToday(date),
-                                isCurrentMonth: isInCurrentMonth(date),
-                                activeLayer: overrideStore.activeLayer(for: date),
-                                isDisabled: isDateDisabled(date),
-                                notificationCount: notificationCountsByDate[calendar.startOfDay(for: date)] ?? 0,
-                                onTap: {
-                                    if calendarService.isSchoolDay(date) {
-                                        selectedDateForOverride = IdentifiableDate(date: date)
-                                    }
-                                }
-                            )
-                            #else
                             DayCellWithOverride(
                                 date: date,
                                 isSchoolDay: calendarService.isSchoolDay(date),
@@ -94,7 +75,6 @@ struct CalendarView: View {
                                     }
                                 }
                             )
-                            #endif
                         } else {
                             Color.clear
                                 .frame(width: 36, height: 44)
@@ -209,27 +189,7 @@ struct CalendarView: View {
                 )
             }
         }
-        #if DEBUG
-        .onAppear {
-            refreshNotificationCounts()
-        }
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Text("\(notificationCountsByDate.values.reduce(0, +)) notifs")
-                    .font(.caption)
-                    .foregroundColor(.orange)
-            }
-        }
-        #endif
     }
-
-    #if DEBUG
-    private func refreshNotificationCounts() {
-        NotificationManager.shared.getPendingNotificationsByDate { counts in
-            notificationCountsByDate = counts
-        }
-    }
-    #endif
 
     private func isDateDisabled(_ date: Date) -> Bool {
         guard calendarService.isSchoolDay(date) else { return false }
@@ -238,7 +198,7 @@ struct CalendarView: View {
     }
 
     private func rescheduleAllAlarms() {
-        NotificationManager.shared.rescheduleAllAlarms(
+        AlarmKitManager.shared.rescheduleAllAlarms(
             alarmStore: alarmStore,
             calendarService: calendarService,
             overrideStore: overrideStore
@@ -318,9 +278,6 @@ struct DayCellWithOverride: View {
     let isCurrentMonth: Bool
     let activeLayer: AlarmLayer
     let isDisabled: Bool
-    #if DEBUG
-    var notificationCount: Int = 0
-    #endif
     let onTap: () -> Void
 
     private var dayNumber: String {
@@ -368,17 +325,6 @@ struct DayCellWithOverride: View {
                         .foregroundColor(textColor)
                         .strikethrough(isDisabled && isSchoolDay && isCurrentMonth, color: .red)
                 }
-
-                #if DEBUG
-                if notificationCount > 0 {
-                    Text("\(notificationCount)")
-                        .font(.system(size: 8, weight: .bold))
-                        .foregroundColor(.orange)
-                } else {
-                    Text(" ")
-                        .font(.system(size: 8))
-                }
-                #endif
             }
             .frame(height: 44)
         }

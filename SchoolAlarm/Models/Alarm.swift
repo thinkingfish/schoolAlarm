@@ -67,7 +67,7 @@ struct Alarm: Identifiable, Codable, Equatable {
     var bundledSound: BundledSound = .funnyRing
 
     var alarmSoundName: String {
-        bundledSound.rawValue
+        "\(bundledSound.rawValue).caf"
     }
 }
 
@@ -136,7 +136,7 @@ class AlarmStore: ObservableObject {
     func deleteAlarm(_ alarm: Alarm) {
         alarms.removeAll { $0.id == alarm.id }
         saveAlarms()
-        NotificationManager.shared.cancelNotifications(for: alarm)
+        // Alarms are rescheduled centrally via AlarmKitManager
     }
 
     func toggleAlarm(_ alarm: Alarm) {

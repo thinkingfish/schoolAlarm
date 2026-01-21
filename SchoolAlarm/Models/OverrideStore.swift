@@ -43,7 +43,8 @@ class OverrideStore: ObservableObject {
         UserDefaults.standard.set(allAlarmsEnabled, forKey: allAlarmsEnabledKey)
     }
 
-    private func cleanupPastOverrides() {
+    /// Remove date overrides for dates that have passed
+    func cleanupPastOverrides() {
         let startOfToday = Calendar.current.startOfDay(for: Date())
         let beforeCount = dateOverrides.count
         dateOverrides.removeAll { $0.date < startOfToday }

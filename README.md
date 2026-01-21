@@ -16,39 +16,17 @@ A smart alarm clock app for SFUSD (San Francisco Unified School District) famili
   - Base alarm time (applies to all school days)
   - Weekly rules (e.g., "7:30 AM every Wednesday")
   - One-time date overrides (e.g., "skip alarm on Dec 20")
-- **Chained Notifications**: Each alarm fires 3 notifications 30 seconds apart (~90 seconds total) to help heavy sleepers
+- **True System Alarms**: Uses iOS 26 AlarmKit for alarms that break through DND and silent mode
 - **Snooze Support**: 5-minute snooze for normal alarms (15 seconds in debug builds for testing)
 - **Custom Alarm Sounds**: Bundled sounds including kid-friendly options
-- **Background Refresh**: Automatically reschedules notifications when needed
-
-Note: because alarms are implemented as Notifications (before iOS 26 no Alarm APIs are provided to 3rdparty developers), it has a number of limitations in terms of functionality and configuration, read on to understand them.
+- **Background Refresh**: Automatically reschedules alarms when needed
 
 ## Requirements
 
-- iOS 16.0+
+- iOS 26.0+
 - iPhone or iPad
 
 ## Configuration
-
-### System Settings (iOS Settings App)
-
-For the alarm to work reliably, configure these settings:
-
-1. **Settings > SchoolAlarm > Notifications**:
-   - Allow Notifications: **ON**
-   - Lock Screen: **ON**
-   - Notification Center: **ON**
-   - Banners: **ON**
-   - Sounds: **ON**
-   - Badges: **ON**
-   - Show Previews: **Always** (recommended)
-
-2. **Settings > Focus > Do Not Disturb** (if using DND overnight):
-   - Add SchoolAlarm to "Allowed Apps" so alarms can break through DND
-   - Alternatively, set DND to end before your earliest alarm time
-
-3. **Settings > Display & Brightness > Auto-Lock**:
-   - Not required for alarms to work, but note that notification sounds are limited to ~30 seconds by iOS
 
 ### App Settings
 
@@ -57,15 +35,6 @@ For the alarm to work reliably, configure these settings:
 3. **Add one-time overrides** (optional): Create or Override alarm time for specific dates
 
 The priority of these settings goes 3>2>1, so the highest applicable setting wins. It's also OK to not have a base alarm if you only need it for specific weekday(s) or dates.
-
-## iOS Limitations
-
-Due to iOS restrictions on third-party apps:
-
-- **Notification Sound Duration**: Each notification sound is limited to ~30 seconds. The app works around this by chaining 3 notifications 30 seconds apart. Acknowledging the current notification cancels subsequent notifications for the same event.
-- **Action Buttons**: Snooze/Dismiss buttons require a **long-press** on the notification to reveal. This is an iOS design decision that cannot be changed.
-- **64 Notification Limit**: iOS allows a maximum of 64 scheduled notifications. With 3 notifications per alarm, this means ~20 school days can be scheduled ahead. The app uses background refresh to reschedule as needed.
-- **No Full-Screen Alarm**: Unlike Apple's Clock app, third-party apps cannot display a full-screen alarm interface on the lock screen.
 
 ## Calendar Source
 
@@ -95,7 +64,7 @@ SchoolAlarm/
 │   └── DateOverrideEditView.swift  # Edit one-time date overrides
 ├── Services/
 │   ├── CalendarService.swift   # Fetches and parses SFUSD calendar
-│   └── NotificationManager.swift   # Schedules iOS notifications
+│   └── AlarmScheduler.swift    # Schedules alarms using AlarmKit
 ├── Utilities/
 │   └── ICSParser.swift         # Parses ICS calendar format
 └── Resources/
@@ -110,15 +79,15 @@ SchoolAlarm/
 
 1. Open `SchoolAlarm.xcodeproj` in Xcode
 2. Select your development team in Signing & Capabilities
-3. Build and run on your device (notifications don't work reliably in Simulator)
+3. Build and run on your device (AlarmKit requires a physical device)
 
 ## Debug Features
 
 Debug builds include a test section at the bottom of the main screen:
-- Schedule test notifications at various delays
-- View pending notification counts
-- Check notification permission status
-- Cancel test notifications
+- Schedule test alarms at various delays
+- View pending alarm counts
+- Check alarm authorization status
+- Cancel test alarms
 
 These features are compiled out in Release builds.
 
