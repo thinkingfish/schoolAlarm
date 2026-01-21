@@ -66,3 +66,6 @@ secrets.json
 
 # Claude Code
 .claude/
+
+# Git worktrees
+.worktrees/
