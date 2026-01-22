@@ -97,7 +97,13 @@ struct ContentView: View {
                     DistrictSelectionView { newDistrict in
                         Task {
                             await calendarService.loadCalendar(for: newDistrict)
-                            rescheduleAllAlarms()
+                            // Use newDistrict directly, not the computed property
+                            AlarmKitManager.shared.rescheduleAllAlarms(
+                                alarmStore: alarmStore,
+                                calendarService: calendarService,
+                                overrideStore: overrideStore,
+                                district: newDistrict
+                            )
                         }
                     }
                     .environmentObject(districtStore)
