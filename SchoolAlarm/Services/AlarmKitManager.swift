@@ -153,12 +153,13 @@ class AlarmKitManager: ObservableObject {
     func rescheduleAllAlarms(
         alarmStore: AlarmStore,
         calendarService: CalendarService,
-        overrideStore: OverrideStore
+        overrideStore: OverrideStore,
+        district: District
     ) {
         // Clean up past one-time overrides
         overrideStore.cleanupPastOverrides()
 
-        let schoolDays = calendarService.upcomingSchoolDays()
+        let schoolDays = calendarService.upcomingSchoolDays(district: district)
         let baseAlarm = alarmStore.alarms.first
 
         Task {
