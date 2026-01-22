@@ -7,7 +7,9 @@ struct SchoolCalendarEvent: Identifiable, Codable {
     var endDate: Date
     var isAllDay: Bool
 
+    /// Returns true if this event closes school (must be all-day + holiday keywords)
     var isHoliday: Bool {
+        guard isAllDay else { return false }
         let lowercased = summary.lowercased()
         return lowercased.contains("holiday") ||
                lowercased.contains("recess") ||
@@ -58,15 +60,13 @@ struct SchoolCalendar: Codable {
             return false
         }
 
-        // Check if it's a holiday or break (only all-day events close school)
-        for event in events {
-            if event.isHoliday && event.isAllDay {
-                let eventStart = calendar.startOfDay(for: event.startDate)
-                let eventEnd = calendar.startOfDay(for: event.endDate)
+        // Check if it's a holiday or break
+        for event in events where event.isHoliday {
+            let eventStart = calendar.startOfDay(for: event.startDate)
+            let eventEnd = calendar.startOfDay(for: event.endDate)
 
-                if startOfDay >= eventStart && startOfDay < eventEnd {
-                    return false
-                }
+            if startOfDay >= eventStart && startOfDay < eventEnd {
+                return false
             }
         }
 
