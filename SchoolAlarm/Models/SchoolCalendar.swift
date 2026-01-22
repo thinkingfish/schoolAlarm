@@ -58,20 +58,14 @@ struct SchoolCalendar: Codable {
             return false
         }
 
-        // Check if it's a holiday or break
+        // Check if it's a holiday or break (only all-day events close school)
         for event in events {
-            if event.isHoliday {
+            if event.isHoliday && event.isAllDay {
                 let eventStart = calendar.startOfDay(for: event.startDate)
                 let eventEnd = calendar.startOfDay(for: event.endDate)
 
-                if event.isAllDay {
-                    if startOfDay >= eventStart && startOfDay < eventEnd {
-                        return false
-                    }
-                } else {
-                    if startOfDay >= eventStart && startOfDay <= eventEnd {
-                        return false
-                    }
+                if startOfDay >= eventStart && startOfDay < eventEnd {
+                    return false
                 }
             }
         }
