@@ -200,4 +200,6 @@ struct AlarmEditView: View {
     AlarmEditView(mode: .add)
         .environmentObject(AlarmStore())
         .environmentObject(CalendarService())
+        .environmentObject(OverrideStore())
+        .environmentObject(DistrictStore())
 }

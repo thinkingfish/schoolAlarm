@@ -419,4 +419,5 @@ struct DateOverrideEditView: View {
 #Preview {
     DateOverrideEditView(mode: .add, onSave: { _ in })
         .environmentObject(CalendarService())
+        .environmentObject(DistrictStore())
 }
