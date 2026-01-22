@@ -5,12 +5,17 @@ struct CalendarView: View {
     @EnvironmentObject var calendarService: CalendarService
     @EnvironmentObject var overrideStore: OverrideStore
     @EnvironmentObject var alarmStore: AlarmStore
+    @EnvironmentObject var districtStore: DistrictStore
 
     @State private var currentMonth: Date = Date()
     @State private var selectedDateForOverride: IdentifiableDate?
 
     private let calendar = Calendar.current
     private let daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"]
+
+    private var district: District {
+        districtStore.selectedDistrict!
+    }
 
     var body: some View {
         ZStack {
@@ -64,13 +69,13 @@ struct CalendarView: View {
                         if let date = date {
                             DayCellWithOverride(
                                 date: date,
-                                isSchoolDay: calendarService.isSchoolDay(date),
+                                isSchoolDay: calendarService.isSchoolDay(date, district: district),
                                 isToday: calendar.isDateInToday(date),
                                 isCurrentMonth: isInCurrentMonth(date),
                                 activeLayer: overrideStore.activeLayer(for: date),
                                 isDisabled: isDateDisabled(date),
                                 onTap: {
-                                    if calendarService.isSchoolDay(date) {
+                                    if calendarService.isSchoolDay(date, district: district) {
                                         selectedDateForOverride = IdentifiableDate(date: date)
                                     }
                                 }
@@ -119,7 +124,7 @@ struct CalendarView: View {
                 // Refresh button
                 Button {
                     Task {
-                        await calendarService.refreshCalendar()
+                        await calendarService.refreshCalendar(for: district)
                     }
                 } label: {
                     HStack {
@@ -145,7 +150,7 @@ struct CalendarView: View {
                 }
             }
         }
-        .navigationTitle("SFUSD Calendar (2025-2026)")
+        .navigationTitle("\(district.shortName) Calendar")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -192,7 +197,7 @@ struct CalendarView: View {
     }
 
     private func isDateDisabled(_ date: Date) -> Bool {
-        guard calendarService.isSchoolDay(date) else { return false }
+        guard calendarService.isSchoolDay(date, district: district) else { return false }
         let baseAlarm = alarmStore.alarms.first
         return overrideStore.effectiveAlarmTime(for: date, baseAlarm: baseAlarm) == nil
     }
@@ -201,7 +206,8 @@ struct CalendarView: View {
         AlarmKitManager.shared.rescheduleAllAlarms(
             alarmStore: alarmStore,
             calendarService: calendarService,
-            overrideStore: overrideStore
+            overrideStore: overrideStore,
+            district: district
         )
     }
 
@@ -237,11 +243,15 @@ struct CalendarView: View {
 
     private var upcomingHolidays: [SchoolCalendarEvent] {
         let now = Date()
-        let schoolYearEnd = SchoolCalendar.schoolYearEnd
+        let calendar = Calendar.current
+        let currentYear = calendar.component(.year, from: now)
+        let month = calendar.component(.month, from: now)
+        let schoolYearStartYear = month >= 8 ? currentYear : currentYear - 1
+        let schoolYearEnd = district.schoolYearEndDate(year: schoolYearStartYear)
+
         return calendarService.calendar.events
             .filter { event in
                 guard event.isHoliday && event.startDate <= schoolYearEnd else { return false }
-                // Include if event hasn't ended yet (covers both upcoming and ongoing)
                 return event.endDate > now
             }
             .sorted { $0.startDate < $1.startDate }
@@ -499,5 +509,6 @@ struct UpcomingHolidaysSection: View {
             .environmentObject(CalendarService())
             .environmentObject(OverrideStore())
             .environmentObject(AlarmStore())
+            .environmentObject(DistrictStore())
     }
 }
