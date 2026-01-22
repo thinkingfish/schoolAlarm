@@ -1,4 +1,5 @@
 import SwiftUI
+import AVFoundation
 
 enum AlarmEditMode: Identifiable {
     case add
@@ -45,6 +46,7 @@ struct AlarmEditView: View {
     @State private var selectedSound: Alarm.BundledSound
 
     @State private var showingDeleteConfirmation = false
+    @State private var audioPlayer: AVAudioPlayer?
 
     init(mode: AlarmEditMode) {
         self.mode = mode
@@ -156,6 +158,24 @@ struct AlarmEditView: View {
             } message: {
                 Text("Are you sure you want to delete this alarm?")
             }
+            .onChange(of: selectedSound) { _, newSound in
+                playPreviewSound(newSound)
+            }
+        }
+    }
+
+    private func playPreviewSound(_ sound: Alarm.BundledSound) {
+        audioPlayer?.stop()
+
+        guard let url = Bundle.main.url(forResource: sound.rawValue, withExtension: "caf") else {
+            return
+        }
+
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            audioPlayer?.play()
+        } catch {
+            print("Failed to play preview sound: \(error)")
         }
     }
 
