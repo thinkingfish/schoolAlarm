@@ -33,6 +33,11 @@ struct AlarmEditView: View {
     @EnvironmentObject var alarmStore: AlarmStore
     @EnvironmentObject var calendarService: CalendarService
     @EnvironmentObject var overrideStore: OverrideStore
+    @EnvironmentObject var districtStore: DistrictStore
+
+    private var district: District {
+        districtStore.selectedDistrict!
+    }
 
     @State private var selectedTime: Date
     @State private var label: String
@@ -179,7 +184,8 @@ struct AlarmEditView: View {
         AlarmKitManager.shared.rescheduleAllAlarms(
             alarmStore: alarmStore,
             calendarService: calendarService,
-            overrideStore: overrideStore
+            overrideStore: overrideStore,
+            district: district
         )
     }
 
