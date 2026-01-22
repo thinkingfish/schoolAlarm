@@ -16,6 +16,7 @@ struct ContentView: View {
     @State private var selectedAlarm: Alarm?
     @State private var selectedWeeklyRule: WeeklyRule?
     @State private var selectedDateOverride: DateOverride?
+    @State private var showingDistrictSelection = false
 
     var body: some View {
         NavigationStack {
@@ -76,6 +77,32 @@ struct ContentView: View {
             .navigationTitle("Wake Up for School")
             .navigationBarTitleDisplayMode(.large)
             .preferredColorScheme(.dark)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingDistrictSelection = true
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text(district.shortName)
+                                .font(.subheadline)
+                            Image(systemName: "chevron.down")
+                                .font(.caption)
+                        }
+                        .foregroundColor(.orange)
+                    }
+                }
+            }
+            .sheet(isPresented: $showingDistrictSelection) {
+                NavigationStack {
+                    DistrictSelectionView { newDistrict in
+                        Task {
+                            await calendarService.loadCalendar(for: newDistrict)
+                            rescheduleAllAlarms()
+                        }
+                    }
+                    .environmentObject(districtStore)
+                }
+            }
             .sheet(isPresented: $showingAddAlarm) {
                 AlarmEditView(mode: .add)
             }
