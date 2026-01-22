@@ -20,28 +20,41 @@ struct SchoolCalendarEvent: Identifiable, Codable {
 struct SchoolCalendar: Codable {
     var events: [SchoolCalendarEvent]
     var lastUpdated: Date
+    var districtId: String?
 
-    // School year dates for 2025-2026
-    static let schoolYearStart = Calendar.current.date(from: DateComponents(year: 2025, month: 8, day: 18))!
-    static let schoolYearEnd = Calendar.current.date(from: DateComponents(year: 2026, month: 6, day: 3))!
-
-    init(events: [SchoolCalendarEvent] = [], lastUpdated: Date = Date()) {
+    init(events: [SchoolCalendarEvent] = [], lastUpdated: Date = Date(), districtId: String? = nil) {
         self.events = events
         self.lastUpdated = lastUpdated
+        self.districtId = districtId
     }
 
-    func isSchoolDay(_ date: Date) -> Bool {
+    /// Determines the school year start year for a given date
+    /// If month >= 8 (Aug-Dec), we're in first half of school year starting this year
+    /// If month < 8 (Jan-Jul), we're in second half of school year that started last year
+    private func schoolYearStartYear(for date: Date) -> Int {
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        return month >= 8 ? year : year - 1
+    }
+
+    func isSchoolDay(_ date: Date, district: District) -> Bool {
         let calendar = Calendar.current
 
         // Check if it's a weekend
         let weekday = calendar.component(.weekday, from: date)
-        if weekday == 1 || weekday == 7 { // Sunday = 1, Saturday = 7
+        if weekday == 1 || weekday == 7 {
             return false
         }
 
+        // Get school year boundaries for this date
+        let startYear = schoolYearStartYear(for: date)
+        let schoolYearStart = district.schoolYearStartDate(year: startYear)
+        let schoolYearEnd = district.schoolYearEndDate(year: startYear)
+
         // Check if date is within school year
         let startOfDay = calendar.startOfDay(for: date)
-        if startOfDay < Self.schoolYearStart || startOfDay > Self.schoolYearEnd {
+        if startOfDay < schoolYearStart || startOfDay > schoolYearEnd {
             return false
         }
 
@@ -51,8 +64,6 @@ struct SchoolCalendar: Codable {
                 let eventStart = calendar.startOfDay(for: event.startDate)
                 let eventEnd = calendar.startOfDay(for: event.endDate)
 
-                // ICS all-day events use exclusive end dates, so we use < instead of <=
-                // For example, MLK Day (Jan 19) has DTEND of Jan 20, but Jan 20 is a school day
                 if event.isAllDay {
                     if startOfDay >= eventStart && startOfDay < eventEnd {
                         return false
@@ -68,18 +79,16 @@ struct SchoolCalendar: Codable {
         return true
     }
 
-    func nextSchoolDay(after date: Date = Date()) -> Date? {
+    func nextSchoolDay(after date: Date = Date(), district: District) -> Date? {
         let calendar = Calendar.current
         var currentDate = calendar.startOfDay(for: date)
 
-        // If it's already past the alarm time today, start from tomorrow
         if date > currentDate {
             currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
         }
 
-        // Look up to 366 days ahead (accounts for leap years)
         for _ in 0..<366 {
-            if isSchoolDay(currentDate) {
+            if isSchoolDay(currentDate, district: district) {
                 return currentDate
             }
             currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
@@ -88,19 +97,21 @@ struct SchoolCalendar: Codable {
         return nil
     }
 
-    func schoolDays(from startDate: Date, count: Int) -> [Date] {
+    func schoolDays(from startDate: Date, count: Int, district: District) -> [Date] {
         var schoolDays: [Date] = []
         let calendar = Calendar.current
         var currentDate = calendar.startOfDay(for: startDate)
 
+        let startYear = schoolYearStartYear(for: startDate)
+        let schoolYearEnd = district.schoolYearEndDate(year: startYear)
+
         while schoolDays.count < count {
-            if isSchoolDay(currentDate) {
+            if isSchoolDay(currentDate, district: district) {
                 schoolDays.append(currentDate)
             }
             currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
 
-            // Safety limit
-            if currentDate > Self.schoolYearEnd {
+            if currentDate > schoolYearEnd {
                 break
             }
         }
@@ -108,7 +119,7 @@ struct SchoolCalendar: Codable {
         return schoolDays
     }
 
-    func nonSchoolDays(in month: Date) -> [Date] {
+    func nonSchoolDays(in month: Date, district: District) -> [Date] {
         let calendar = Calendar.current
         let range = calendar.range(of: .day, in: .month, for: month)!
         let components = calendar.dateComponents([.year, .month], from: month)
@@ -118,7 +129,7 @@ struct SchoolCalendar: Codable {
         for day in range {
             var dayComponents = components
             dayComponents.day = day
-            if let date = calendar.date(from: dayComponents), !isSchoolDay(date) {
+            if let date = calendar.date(from: dayComponents), !isSchoolDay(date, district: district) {
                 nonSchoolDays.append(date)
             }
         }
