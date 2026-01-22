@@ -8,30 +8,32 @@ class CalendarService: ObservableObject {
     @Published var error: String?
     @Published var lastRefresh: Date?
 
-    private let calendarURL = "https://calendar.google.com/calendar/ical/sfusd.edu_bqjal71qaoocvnuspm9vl4qnuo%40group.calendar.google.com/public/basic.ics"
-    private let cacheKey = "CachedSchoolCalendar"
-    private let lastRefreshKey = "LastCalendarRefresh"
-
-    init() {
-        loadCachedCalendar()
+    private func cacheKey(for district: District) -> String {
+        "CachedSchoolCalendar_\(district.id)"
     }
 
-    func loadCalendar() async {
+    private func lastRefreshKey(for district: District) -> String {
+        "LastCalendarRefresh_\(district.id)"
+    }
+
+    init() {}
+
+    func loadCalendar(for district: District) async {
         // Load from cache first
-        loadCachedCalendar()
+        loadCachedCalendar(for: district)
 
         // Check if we need to refresh (older than 24 hours)
-        if shouldRefresh() {
-            await refreshCalendar()
+        if shouldRefresh(for: district) {
+            await refreshCalendar(for: district)
         }
     }
 
-    func refreshCalendar() async {
+    func refreshCalendar(for district: District) async {
         isLoading = true
         error = nil
 
         do {
-            guard let url = URL(string: calendarURL) else {
+            guard let url = URL(string: district.calendarURL) else {
                 throw CalendarError.invalidURL
             }
 
@@ -47,13 +49,13 @@ class CalendarService: ObservableObject {
             }
 
             let events = ICSParser.parse(icsString)
-            calendar = SchoolCalendar(events: events, lastUpdated: Date())
+            calendar = SchoolCalendar(events: events, lastUpdated: Date(), districtId: district.id)
 
             // Cache the calendar
-            saveCalendarToCache()
+            saveCalendarToCache(for: district)
 
             lastRefresh = Date()
-            UserDefaults.standard.set(lastRefresh, forKey: lastRefreshKey)
+            UserDefaults.standard.set(lastRefresh, forKey: lastRefreshKey(for: district))
 
         } catch {
             self.error = error.localizedDescription
@@ -62,23 +64,26 @@ class CalendarService: ObservableObject {
         isLoading = false
     }
 
-    private func loadCachedCalendar() {
-        if let data = UserDefaults.standard.data(forKey: cacheKey),
+    private func loadCachedCalendar(for district: District) {
+        let key = cacheKey(for: district)
+        if let data = UserDefaults.standard.data(forKey: key),
            let cached = try? JSONDecoder().decode(SchoolCalendar.self, from: data) {
             calendar = cached
+        } else {
+            calendar = SchoolCalendar(districtId: district.id)
         }
 
-        lastRefresh = UserDefaults.standard.object(forKey: lastRefreshKey) as? Date
+        lastRefresh = UserDefaults.standard.object(forKey: lastRefreshKey(for: district)) as? Date
     }
 
-    private func saveCalendarToCache() {
+    private func saveCalendarToCache(for district: District) {
         if let encoded = try? JSONEncoder().encode(calendar) {
-            UserDefaults.standard.set(encoded, forKey: cacheKey)
+            UserDefaults.standard.set(encoded, forKey: cacheKey(for: district))
         }
     }
 
-    private func shouldRefresh() -> Bool {
-        guard let lastRefresh = lastRefresh else {
+    private func shouldRefresh(for district: District) -> Bool {
+        guard let lastRefresh = UserDefaults.standard.object(forKey: lastRefreshKey(for: district)) as? Date else {
             return true
         }
 
@@ -86,16 +91,18 @@ class CalendarService: ObservableObject {
         return hoursSinceRefresh > 24
     }
 
-    func isSchoolDay(_ date: Date) -> Bool {
-        calendar.isSchoolDay(date)
+    // MARK: - Convenience (require district)
+
+    func isSchoolDay(_ date: Date, district: District) -> Bool {
+        calendar.isSchoolDay(date, district: district)
     }
 
-    func nextSchoolDay() -> Date? {
-        calendar.nextSchoolDay(after: Date())
+    func nextSchoolDay(district: District) -> Date? {
+        calendar.nextSchoolDay(after: Date(), district: district)
     }
 
-    func upcomingSchoolDays(count: Int = 60) -> [Date] {
-        calendar.schoolDays(from: Date(), count: count)
+    func upcomingSchoolDays(count: Int = 60, district: District) -> [Date] {
+        calendar.schoolDays(from: Date(), count: count, district: district)
     }
 }
 

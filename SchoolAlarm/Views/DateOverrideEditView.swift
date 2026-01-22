@@ -5,6 +5,11 @@ import SwiftUI
 struct SchoolDayDatePicker: View {
     @Binding var selectedDate: Date
     @EnvironmentObject var calendarService: CalendarService
+    @EnvironmentObject var districtStore: DistrictStore
+
+    private var district: District {
+        districtStore.selectedDistrict!
+    }
 
     @State private var currentMonth: Date
 
@@ -68,7 +73,7 @@ struct SchoolDayDatePicker: View {
                     if let date = date {
                         SchoolDayCell(
                             date: date,
-                            isSchoolDay: calendarService.isSchoolDay(date),
+                            isSchoolDay: calendarService.isSchoolDay(date, district: district),
                             isSelected: calendar.isDate(date, inSameDayAs: selectedDate),
                             isToday: calendar.isDateInToday(date),
                             isCurrentMonth: isInCurrentMonth(date),
@@ -229,6 +234,11 @@ struct DateOverrideEditView: View {
 
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject var calendarService: CalendarService
+    @EnvironmentObject var districtStore: DistrictStore
+
+    private var district: District {
+        districtStore.selectedDistrict!
+    }
 
     @State private var selectedDate: Date
     @State private var actionType: ActionType = .customTime
@@ -363,7 +373,7 @@ struct DateOverrideEditView: View {
             .onAppear {
                 // Ensure selected date is a school day when adding new override
                 if mode.override == nil && mode.preselectedDate == nil {
-                    if !calendarService.isSchoolDay(selectedDate) {
+                    if !calendarService.isSchoolDay(selectedDate, district: district) {
                         selectedDate = findNextSchoolDay(from: selectedDate)
                     }
                 }
@@ -376,7 +386,7 @@ struct DateOverrideEditView: View {
         let calendar = Calendar.current
         // Look up to 365 days ahead
         for _ in 0..<365 {
-            if calendarService.isSchoolDay(candidate) {
+            if calendarService.isSchoolDay(candidate, district: district) {
                 return candidate
             }
             candidate = calendar.date(byAdding: .day, value: 1, to: candidate) ?? candidate
@@ -409,4 +419,5 @@ struct DateOverrideEditView: View {
 #Preview {
     DateOverrideEditView(mode: .add, onSave: { _ in })
         .environmentObject(CalendarService())
+        .environmentObject(DistrictStore())
 }

@@ -2,7 +2,13 @@
 
 # SchoolAlarm
 
-A smart alarm clock app for SFUSD (San Francisco Unified School District) families. The app automatically schedules alarms only on school days by syncing with the official SFUSD calendar.
+A smart alarm clock app for Bay Area school families. The app automatically schedules alarms only on school days by syncing with official school district calendars.
+
+## Supported Districts
+
+- **SFUSD** - San Francisco Unified School District
+- **BUSD** - Berkeley Unified School District
+- **Fremont USD** - Fremont Unified School District
 
 <p align="center">
   <img src="assets/main.png" width="45%" alt="Main View">
@@ -11,7 +17,8 @@ A smart alarm clock app for SFUSD (San Francisco Unified School District) famili
 
 ## Features
 
-- **Smart School Day Detection**: Automatically fetches and parses the SFUSD calendar to determine school days
+- **Multi-District Support**: Select your school district on first launch, change anytime from settings
+- **Smart School Day Detection**: Automatically fetches and parses district calendars to determine school days
 - **Layered Override System**:
   - Base alarm time (applies to all school days)
   - Weekly rules (e.g., "7:30 AM every Wednesday")
@@ -28,7 +35,11 @@ A smart alarm clock app for SFUSD (San Francisco Unified School District) famili
 
 ## Configuration
 
-### App Settings
+### District Selection
+
+On first launch, select your school district. The app will download that district's calendar and use it for school day detection. To change districts later, tap the district name in the top-right corner of the main screen.
+
+### Alarm Settings
 
 1. **Create a base alarm**: Set your default wake-up time that applies to all school days
 2. **Add weekly rules** (optional): Create or Override the base time for specific days of the week
@@ -36,39 +47,47 @@ A smart alarm clock app for SFUSD (San Francisco Unified School District) famili
 
 The priority of these settings goes 3>2>1, so the highest applicable setting wins. It's also OK to not have a base alarm if you only need it for specific weekday(s) or dates.
 
-## Calendar Source
+## Calendar Sources
 
-The app fetches the school calendar from:
-```
-https://www.sfusd.edu/calendars/export/ical/custom-type-id-3836
-```
+Each district's calendar is fetched from official ICS feeds:
 
-This is the official SFUSD "School Day" calendar. The app caches the calendar locally and refreshes it when the app is opened.
+| District | Calendar Source |
+|----------|-----------------|
+| SFUSD | Google Calendar (sfusd.edu) |
+| BUSD | Google Calendar (berkeley.net) |
+| Fremont USD | Google Calendar (fusdk12.net) |
+
+The app caches each district's calendar locally with per-district storage. Calendars refresh automatically when the app is opened.
 
 ## Project Structure
 
 ```
 SchoolAlarm/
 ├── App/
-│   ├── SchoolAlarmApp.swift    # App entry point, background refresh
+│   ├── SchoolAlarmApp.swift    # App entry point, district flow
 │   └── ContentView.swift       # Main UI with alarm list
 ├── Models/
 │   ├── Alarm.swift             # Alarm model and AlarmStore
+│   ├── District.swift          # District model (id, name, calendar URL, school year dates)
 │   ├── OverrideModels.swift    # Weekly rules and date overrides
 │   ├── OverrideStore.swift     # Override management
 │   └── SchoolCalendar.swift    # Calendar data model
 ├── Views/
 │   ├── AlarmEditView.swift     # Edit alarm time/sound/label
 │   ├── CalendarView.swift      # Monthly calendar with override indicators
+│   ├── DistrictSelectionView.swift # District picker with search
+│   ├── OnboardingView.swift    # First-launch district selection
 │   ├── WeeklyRuleEditView.swift    # Edit weekly override rules
 │   └── DateOverrideEditView.swift  # Edit one-time date overrides
 ├── Services/
-│   ├── CalendarService.swift   # Fetches and parses SFUSD calendar
-│   └── AlarmScheduler.swift    # Schedules alarms using AlarmKit
+│   ├── CalendarService.swift   # Fetches and parses district calendars
+│   ├── DistrictStore.swift     # Loads districts, persists selection
+│   └── AlarmKitManager.swift   # Schedules alarms using AlarmKit
 ├── Utilities/
 │   └── ICSParser.swift         # Parses ICS calendar format
 └── Resources/
     ├── Assets.xcassets         # App icons and colors
+    ├── districts.json          # Bundled district configurations
     ├── funny_ring.caf          # Alarm sounds
     ├── click_ring.caf
     ├── kid_shouting_1.caf

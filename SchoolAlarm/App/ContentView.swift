@@ -4,6 +4,11 @@ struct ContentView: View {
     @EnvironmentObject var alarmStore: AlarmStore
     @EnvironmentObject var calendarService: CalendarService
     @EnvironmentObject var overrideStore: OverrideStore
+    @EnvironmentObject var districtStore: DistrictStore
+
+    private var district: District {
+        districtStore.selectedDistrict!
+    }
 
     @State private var showingAddAlarm = false
     @State private var showingAddWeeklyRule = false
@@ -11,6 +16,7 @@ struct ContentView: View {
     @State private var selectedAlarm: Alarm?
     @State private var selectedWeeklyRule: WeeklyRule?
     @State private var selectedDateOverride: DateOverride?
+    @State private var showingDistrictSelection = false
 
     var body: some View {
         NavigationStack {
@@ -24,6 +30,7 @@ struct ContentView: View {
                             .environmentObject(calendarService)
                             .environmentObject(overrideStore)
                             .environmentObject(alarmStore)
+                            .environmentObject(districtStore)
 
                         // Extra spacing before master toggle
                         Spacer().frame(height: 24)
@@ -41,6 +48,8 @@ struct ContentView: View {
                         )
                         .environmentObject(alarmStore)
                         .environmentObject(overrideStore)
+                        .environmentObject(calendarService)
+                        .environmentObject(districtStore)
 
                         Divider().background(Color.gray.opacity(0.3)).padding(.vertical, 8)
 
@@ -68,6 +77,38 @@ struct ContentView: View {
             .navigationTitle("Wake Up for School")
             .navigationBarTitleDisplayMode(.large)
             .preferredColorScheme(.dark)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingDistrictSelection = true
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text(district.shortName)
+                                .font(.subheadline)
+                            Image(systemName: "chevron.down")
+                                .font(.caption)
+                        }
+                        .foregroundColor(.orange)
+                    }
+                }
+            }
+            .sheet(isPresented: $showingDistrictSelection) {
+                NavigationStack {
+                    DistrictSelectionView { newDistrict in
+                        Task {
+                            await calendarService.loadCalendar(for: newDistrict)
+                            // Use newDistrict directly, not the computed property
+                            AlarmKitManager.shared.rescheduleAllAlarms(
+                                alarmStore: alarmStore,
+                                calendarService: calendarService,
+                                overrideStore: overrideStore,
+                                district: newDistrict
+                            )
+                        }
+                    }
+                    .environmentObject(districtStore)
+                }
+            }
             .sheet(isPresented: $showingAddAlarm) {
                 AlarmEditView(mode: .add)
             }
@@ -111,7 +152,8 @@ struct ContentView: View {
         AlarmKitManager.shared.rescheduleAllAlarms(
             alarmStore: alarmStore,
             calendarService: calendarService,
-            overrideStore: overrideStore
+            overrideStore: overrideStore,
+            district: district
         )
     }
 }
@@ -122,6 +164,11 @@ struct NextAlarmSection: View {
     @EnvironmentObject var calendarService: CalendarService
     @EnvironmentObject var overrideStore: OverrideStore
     @EnvironmentObject var alarmStore: AlarmStore
+    @EnvironmentObject var districtStore: DistrictStore
+
+    private var district: District {
+        districtStore.selectedDistrict!
+    }
 
     var body: some View {
         VStack(spacing: 12) {
@@ -185,7 +232,7 @@ struct NextAlarmSection: View {
 
     private var nextAlarmInfo: (Date, Date, AlarmLayer)? {
         let baseAlarm = alarmStore.alarms.first
-        let schoolDays = calendarService.upcomingSchoolDays()
+        let schoolDays = calendarService.upcomingSchoolDays(district: district)
         let now = Date()
         let calendar = Calendar.current
 
@@ -308,6 +355,11 @@ struct BaseAlarmRow: View {
     @EnvironmentObject var alarmStore: AlarmStore
     @EnvironmentObject var calendarService: CalendarService
     @EnvironmentObject var overrideStore: OverrideStore
+    @EnvironmentObject var districtStore: DistrictStore
+
+    private var district: District {
+        districtStore.selectedDistrict!
+    }
 
     var body: some View {
         Button(action: onTap) {
@@ -350,7 +402,8 @@ struct BaseAlarmRow: View {
         AlarmKitManager.shared.rescheduleAllAlarms(
             alarmStore: alarmStore,
             calendarService: calendarService,
-            overrideStore: overrideStore
+            overrideStore: overrideStore,
+            district: district
         )
     }
 }
@@ -511,4 +564,5 @@ struct DateOverrideRow: View {
         .environmentObject(AlarmStore())
         .environmentObject(CalendarService())
         .environmentObject(OverrideStore())
+        .environmentObject(DistrictStore())
 }
