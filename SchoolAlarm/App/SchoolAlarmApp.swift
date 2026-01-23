@@ -1,5 +1,6 @@
 import SwiftUI
 import AlarmKit
+import UserNotifications
 
 @main
 struct SchoolAlarmApp: App {
@@ -29,6 +30,7 @@ struct SchoolAlarmApp: App {
                         }
                         .onChange(of: scenePhase) { _, newPhase in
                             if newPhase == .active {
+                                clearBadgeCount()
                                 rescheduleAlarms()
                             }
                         }
@@ -50,5 +52,11 @@ struct SchoolAlarmApp: App {
             overrideStore: overrideStore,
             district: district
         )
+    }
+
+    private func clearBadgeCount() {
+        Task {
+            try? await UNUserNotificationCenter.current().setBadgeCount(0)
+        }
     }
 }
