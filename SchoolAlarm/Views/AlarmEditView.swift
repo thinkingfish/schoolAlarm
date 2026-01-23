@@ -43,7 +43,7 @@ struct AlarmEditView: View {
     @State private var selectedTime: Date
     @State private var label: String
     @State private var snoozeEnabled: Bool
-    @State private var selectedSound: Alarm.BundledSound
+    @State private var selectedSound: Alarm.AlarmSound
 
     @State private var showingDeleteConfirmation = false
     @State private var audioPlayer: AVAudioPlayer?
@@ -56,17 +56,7 @@ struct AlarmEditView: View {
         _selectedTime = State(initialValue: alarm.time)
         _label = State(initialValue: alarm.label)
         _snoozeEnabled = State(initialValue: alarm.snoozeEnabled)
-        _selectedSound = State(initialValue: alarm.bundledSound)
-    }
-
-    private var availableSounds: [Alarm.BundledSound] {
-        Alarm.BundledSound.allCases.filter { sound in
-            // Hide kid shouting sounds unless easter egg is unlocked
-            if sound == .kidShouting1 || sound == .kidShouting2 {
-                return easterEggUnlocked
-            }
-            return true
-        }
+        _selectedSound = State(initialValue: alarm.alarmSound)
     }
 
     var body: some View {
@@ -103,17 +93,16 @@ struct AlarmEditView: View {
                         }
                         .listRowBackground(Color(white: 0.15))
 
-                        // Sound picker
-                        HStack {
-                            Text("Sound")
-                            Spacer()
-                            Picker("", selection: $selectedSound) {
-                                ForEach(availableSounds, id: \.self) { sound in
-                                    Text(sound.displayName).tag(sound)
-                                }
+                        // Sound picker - navigates to full sound selection
+                        NavigationLink {
+                            SoundSelectionView(selectedSound: $selectedSound, easterEggUnlocked: easterEggUnlocked)
+                        } label: {
+                            HStack {
+                                Text("Sound")
+                                Spacer()
+                                Text(selectedSound.displayName)
+                                    .foregroundColor(.gray)
                             }
-                            .pickerStyle(.menu)
-                            .tint(.gray)
                         }
                         .listRowBackground(Color(white: 0.15))
 
@@ -188,12 +177,18 @@ struct AlarmEditView: View {
         }
     }
 
-    private func playPreviewSound(_ sound: Alarm.BundledSound) {
+    private func playPreviewSound(_ sound: Alarm.AlarmSound) {
         audioPlayer?.stop()
 
-        guard let url = Bundle.main.url(forResource: sound.rawValue, withExtension: "caf") else {
-            return
+        let url: URL?
+        switch sound {
+        case .bundled(let bundled):
+            url = Bundle.main.url(forResource: bundled.rawValue, withExtension: "caf")
+        case .custom:
+            url = CustomSoundManager.shared.customSoundURL()
         }
+
+        guard let url else { return }
 
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
@@ -215,7 +210,7 @@ struct AlarmEditView: View {
         alarm.time = selectedTime
         alarm.label = label
         alarm.snoozeEnabled = snoozeEnabled
-        alarm.bundledSound = selectedSound
+        alarm.alarmSound = selectedSound
         alarm.isEnabled = true
 
         if case .edit = mode {
