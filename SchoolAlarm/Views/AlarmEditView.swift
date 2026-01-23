@@ -47,6 +47,7 @@ struct AlarmEditView: View {
 
     @State private var showingDeleteConfirmation = false
     @State private var audioPlayer: AVAudioPlayer?
+    @AppStorage("easterEggUnlocked") private var easterEggUnlocked = false
 
     init(mode: AlarmEditMode) {
         self.mode = mode
@@ -56,6 +57,16 @@ struct AlarmEditView: View {
         _label = State(initialValue: alarm.label)
         _snoozeEnabled = State(initialValue: alarm.snoozeEnabled)
         _selectedSound = State(initialValue: alarm.bundledSound)
+    }
+
+    private var availableSounds: [Alarm.BundledSound] {
+        Alarm.BundledSound.allCases.filter { sound in
+            // Hide kid shouting sounds unless easter egg is unlocked
+            if sound == .kidShouting1 || sound == .kidShouting2 {
+                return easterEggUnlocked
+            }
+            return true
+        }
     }
 
     var body: some View {
@@ -97,7 +108,7 @@ struct AlarmEditView: View {
                             Text("Sound")
                             Spacer()
                             Picker("", selection: $selectedSound) {
-                                ForEach(Alarm.BundledSound.allCases, id: \.self) { sound in
+                                ForEach(availableSounds, id: \.self) { sound in
                                     Text(sound.displayName).tag(sound)
                                 }
                             }
@@ -124,6 +135,19 @@ struct AlarmEditView: View {
                                     }
                                 }
                                 .listRowBackground(Color(white: 0.15))
+                            }
+                        }
+
+                        // Easter egg: invisible double-tap area
+                        if !easterEggUnlocked {
+                            Section {
+                                Color.clear
+                                    .frame(height: 44)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture(count: 2) {
+                                        unlockEasterEgg()
+                                    }
+                                    .listRowBackground(Color.clear)
                             }
                         }
                     }
@@ -213,6 +237,15 @@ struct AlarmEditView: View {
         if case .edit(let alarm) = mode {
             alarmStore.deleteAlarm(alarm)
         }
+    }
+
+    private func unlockEasterEgg() {
+        // Provide haptic feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+
+        // Unlock the easter egg
+        easterEggUnlocked = true
     }
 }
 
