@@ -8,7 +8,7 @@ struct Alarm: Identifiable, Codable, Equatable {
     var snoozeEnabled: Bool
 
     // Legacy property for backwards compatibility with saved data
-    var sound: LegacyAlarmSound?
+    var sound: AlarmSound?
 
     var hour: Int {
         Calendar.current.component(.hour, from: time)
@@ -63,40 +63,16 @@ struct Alarm: Identifiable, Codable, Equatable {
         }
     }
 
-    /// Represents either a bundled sound or a user-imported custom sound
-    enum AlarmSound: Codable, Equatable, Hashable {
-        case bundled(BundledSound)
-        case custom(filename: String)
-
-        var displayName: String {
-            switch self {
-            case .bundled(let sound): return sound.displayName
-            case .custom(let filename):
-                return (filename as NSString).deletingPathExtension
-            }
-        }
-
-        var isCustom: Bool {
-            if case .custom = self { return true }
-            return false
-        }
-    }
-
     // The selected alarm sound (defaults to funny_ring)
-    var alarmSound: AlarmSound = .bundled(.funnyRing)
+    var bundledSound: BundledSound = .funnyRing
 
     var alarmSoundName: String {
-        switch alarmSound {
-        case .bundled(let sound):
-            return "\(sound.rawValue).caf"
-        case .custom(let filename):
-            return filename
-        }
+        "\(bundledSound.rawValue).caf"
     }
 }
 
 // Legacy enum kept for backwards compatibility with saved alarms
-enum LegacyAlarmSound: String, Codable {
+enum AlarmSound: String, Codable {
     case radar = "Radar"
     case beacon = "Beacon"
     case chimes = "Chimes"

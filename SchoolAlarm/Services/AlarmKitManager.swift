@@ -58,8 +58,8 @@ class AlarmKitManager: ObservableObject {
         overrideStore: OverrideStore,
         baseAlarm: Alarm?
     ) async {
-        // Cancel all existing alarms first
-        cancelAllAlarms()
+        // Cancel all existing alarms first (including orphaned ones)
+        await cancelAllAlarms()
 
         guard overrideStore.allAlarmsEnabled else { return }
 
@@ -129,10 +129,16 @@ class AlarmKitManager: ObservableObject {
 
     // MARK: - Cancellation
 
-    /// Cancel all scheduled alarms
-    func cancelAllAlarms() {
-        for (_, alarmId) in scheduledAlarmsByDate {
-            try? alarmManager.cancel(id: alarmId)
+    /// Cancel all scheduled alarms from AlarmKit (both tracked and orphaned from previous sessions)
+    func cancelAllAlarms() async {
+        // Query all alarms from AlarmKit system and cancel them
+        do {
+            let allAlarms = try alarmManager.alarms
+            for alarm in allAlarms {
+                try? alarmManager.cancel(id: alarm.id)
+            }
+        } catch {
+            print("Error fetching alarms to cancel: \(error)")
         }
         scheduledAlarmsByDate.removeAll()
     }
