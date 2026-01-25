@@ -6,7 +6,6 @@ class CustomSoundManager {
     static let shared = CustomSoundManager()
 
     private let maxFileSize = 10 * 1024 * 1024  // 10MB
-    private let soundsDirectoryName = "CustomSounds"
 
     private init() {
         createSoundsDirectoryIfNeeded()
@@ -14,12 +13,15 @@ class CustomSoundManager {
 
     // MARK: - Directory Management
 
-    private var soundsDirectory: URL {
-        let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
-        return appSupport.appendingPathComponent(soundsDirectoryName)
+    private var soundsDirectory: URL? {
+        guard let library = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first else {
+            return nil
+        }
+        return library.appendingPathComponent("Sounds")
     }
 
     private func createSoundsDirectoryIfNeeded() {
+        guard let soundsDirectory else { return }
         try? FileManager.default.createDirectory(at: soundsDirectory, withIntermediateDirectories: true)
     }
 
@@ -27,12 +29,17 @@ class CustomSoundManager {
 
     /// Returns URL of current custom sound, nil if none imported
     func customSoundURL() -> URL? {
-        guard let filename = customSoundFilename() else { return nil }
-        return soundsDirectory.appendingPathComponent(filename)
+        guard let soundsDirectory,
+              let filename = customSoundFilename() else { return nil }
+        let url = soundsDirectory.appendingPathComponent(filename)
+        // Verify file actually exists before returning
+        guard FileManager.default.fileExists(atPath: url.path) else { return nil }
+        return url
     }
 
     /// Returns filename of current custom sound, nil if none imported
     func customSoundFilename() -> String? {
+        guard let soundsDirectory else { return nil }
         let contents = try? FileManager.default.contentsOfDirectory(at: soundsDirectory, includingPropertiesForKeys: nil)
         return contents?.first?.lastPathComponent
     }
@@ -41,6 +48,10 @@ class CustomSoundManager {
     /// - Returns: filename on success
     /// - Throws: CustomSoundError on failure
     func importSound(from sourceURL: URL) async throws -> String {
+        guard let soundsDirectory else {
+            throw CustomSoundError.copyFailed
+        }
+
         // Start accessing security-scoped resource
         guard sourceURL.startAccessingSecurityScopedResource() else {
             throw CustomSoundError.accessDenied
