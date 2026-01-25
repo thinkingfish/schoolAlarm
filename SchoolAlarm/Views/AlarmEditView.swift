@@ -174,6 +174,9 @@ struct AlarmEditView: View {
             .onChange(of: selectedSound) { _, newSound in
                 playPreviewSound(newSound)
             }
+            .onDisappear {
+                audioPlayer?.stop()
+            }
         }
     }
 
