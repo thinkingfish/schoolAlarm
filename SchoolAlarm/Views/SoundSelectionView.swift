@@ -107,6 +107,10 @@ struct SoundSelectionView: View {
         } message: {
             Text(importError ?? "Unknown error")
         }
+        .onDisappear {
+            audioPlayer?.stop()
+            currentlyPlayingSound = nil
+        }
     }
 
     private func playSound(_ sound: Alarm.AlarmSound) {
