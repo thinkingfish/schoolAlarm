@@ -64,7 +64,7 @@ class AlarmKitManager: ObservableObject {
         guard overrideStore.allAlarmsEnabled else { return }
 
         let calendar = Calendar.current
-        let soundName = baseAlarm?.alarmSoundName ?? Alarm.BundledSound.funnyRing.rawValue
+        let soundName = baseAlarm?.alarmSoundName ?? "funny_ring.caf"
 
         for schoolDay in schoolDays {
             // Get effective alarm time using override resolution
