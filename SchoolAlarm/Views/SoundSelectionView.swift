@@ -8,6 +8,7 @@ struct SoundSelectionView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var audioPlayer: AVAudioPlayer?
+    @State private var currentlyPlayingSound: Alarm.AlarmSound?
     @State private var showingFilePicker = false
     @State private var importError: String?
     @State private var showingImportError = false
@@ -109,7 +110,16 @@ struct SoundSelectionView: View {
     }
 
     private func playSound(_ sound: Alarm.AlarmSound) {
+        // If already playing this sound, restart it from the beginning
+        if currentlyPlayingSound == sound, let player = audioPlayer {
+            player.currentTime = 0
+            player.play()
+            return
+        }
+
+        // Stop current player and create new one for different sound
         audioPlayer?.stop()
+        currentlyPlayingSound = sound
 
         let url: URL?
         switch sound {
@@ -126,6 +136,7 @@ struct SoundSelectionView: View {
             audioPlayer?.play()
         } catch {
             print("Failed to play sound: \(error)")
+            currentlyPlayingSound = nil
         }
     }
 
