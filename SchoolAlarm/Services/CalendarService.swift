@@ -104,6 +104,24 @@ class CalendarService: ObservableObject {
     func upcomingSchoolDays(count: Int = 60, district: District) -> [Date] {
         calendar.schoolDays(from: Date(), count: count, district: district)
     }
+
+    /// Returns the next upcoming holiday event, if any
+    func nextHoliday(district: District) -> SchoolCalendarEvent? {
+        let now = Date()
+        let cal = Calendar.current
+        let currentYear = cal.component(.year, from: now)
+        let month = cal.component(.month, from: now)
+        let schoolYearStartYear = month >= 8 ? currentYear : currentYear - 1
+        let schoolYearEnd = district.schoolYearEndDate(year: schoolYearStartYear)
+
+        return calendar.events
+            .filter { event in
+                guard event.isHoliday && event.startDate <= schoolYearEnd else { return false }
+                return event.startDate > now
+            }
+            .sorted { $0.startDate < $1.startDate }
+            .first
+    }
 }
 
 enum CalendarError: LocalizedError {
