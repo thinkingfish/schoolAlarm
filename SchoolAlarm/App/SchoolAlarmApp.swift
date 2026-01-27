@@ -21,6 +21,9 @@ struct SchoolAlarmApp: App {
                         .environmentObject(districtStore)
                         .onAppear {
                             Task {
+                                // Clear any legacy notifications from pre-AlarmKit versions
+                                UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+
                                 _ = await AlarmKitManager.shared.requestAuthorization()
                                 if let district = districtStore.selectedDistrict {
                                     await calendarService.loadCalendar(for: district)
