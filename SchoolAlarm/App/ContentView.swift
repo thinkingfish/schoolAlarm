@@ -5,6 +5,7 @@ struct ContentView: View {
     @EnvironmentObject var calendarService: CalendarService
     @EnvironmentObject var overrideStore: OverrideStore
     @EnvironmentObject var districtStore: DistrictStore
+    @EnvironmentObject var deepLinkManager: DeepLinkManager
 
     private var district: District {
         districtStore.selectedDistrict!
@@ -17,9 +18,10 @@ struct ContentView: View {
     @State private var selectedWeeklyRule: WeeklyRule?
     @State private var selectedDateOverride: DateOverride?
     @State private var showingDistrictSelection = false
+    @State private var navigationPath = NavigationPath()
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ZStack {
                 Color.black.ignoresSafeArea()
 
@@ -144,6 +146,18 @@ struct ContentView: View {
                     overrideStore.deleteDateOverride(override)
                     rescheduleAllAlarms()
                 })
+            }
+            .navigationDestination(for: DeepLink.self) { deepLink in
+                switch deepLink {
+                case .calendar:
+                    CalendarView()
+                }
+            }
+            .onChange(of: deepLinkManager.pendingDeepLink) { _, deepLink in
+                if let deepLink {
+                    navigationPath.append(deepLink)
+                    deepLinkManager.pendingDeepLink = nil
+                }
             }
         }
     }
@@ -565,4 +579,5 @@ struct DateOverrideRow: View {
         .environmentObject(CalendarService())
         .environmentObject(OverrideStore())
         .environmentObject(DistrictStore())
+        .environmentObject(DeepLinkManager.shared)
 }

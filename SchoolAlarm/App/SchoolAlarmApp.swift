@@ -8,7 +8,12 @@ struct SchoolAlarmApp: App {
     @StateObject private var calendarService = CalendarService()
     @StateObject private var overrideStore = OverrideStore()
     @StateObject private var districtStore = DistrictStore()
+    @StateObject private var deepLinkManager = DeepLinkManager.shared
     @Environment(\.scenePhase) private var scenePhase
+
+    init() {
+        DeepLinkManager.shared.setupNotificationDelegate()
+    }
 
     var body: some Scene {
         WindowGroup {
@@ -19,6 +24,7 @@ struct SchoolAlarmApp: App {
                         .environmentObject(calendarService)
                         .environmentObject(overrideStore)
                         .environmentObject(districtStore)
+                        .environmentObject(deepLinkManager)
                         .onAppear {
                             Task {
                                 _ = await AlarmKitManager.shared.requestAuthorization()
