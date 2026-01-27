@@ -17,10 +17,13 @@
 		20BC29B12F01015800ABE913 /* kid_shouting_1.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BC29AF2F01015800ABE913 /* kid_shouting_1.caf */; };
 		20BC29B22F01015800ABE913 /* kid_shouting_2.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BC29B02F01015800ABE913 /* kid_shouting_2.caf */; };
 		20BEF3CA2F0CA0EE0059D190 /* reveille.caf in Resources */ = {isa = PBXBuildFile; fileRef = 20BEF3C92F0CA0EE0059D190 /* reveille.caf */; };
+		20CD77D12F26004300535720 /* CustomSoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CD77D02F26004300535720 /* CustomSoundManager.swift */; };
+		20CD77D32F26005600535720 /* SoundSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CD77D22F26005600535720 /* SoundSelectionView.swift */; };
 		20DB188A2F208ED7005B898A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20DB18892F208ED7005B898A /* WidgetKit.framework */; };
 		20DB188C2F208ED7005B898A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20DB188B2F208ED7005B898A /* SwiftUI.framework */; };
 		20DB18992F208ED9005B898A /* SchoolAlarmWidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 20DB18872F208ED7005B898A /* SchoolAlarmWidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		20DB18DE2F20A33F005B898A /* AlarmKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20DB18DD2F20A33F005B898A /* AlarmKitManager.swift */; };
+		20EDDF6F2F29648800A46C5D /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20EDDF6E2F29648800A46C5D /* DeepLinkManager.swift */; };
 		A11111110000000000000001 /* SchoolAlarmApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000001 /* SchoolAlarmApp.swift */; };
 		A11111110000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000002 /* ContentView.swift */; };
 		A11111110000000000000003 /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000003 /* Alarm.swift */; };
@@ -72,10 +75,13 @@
 		20BC29AF2F01015800ABE913 /* kid_shouting_1.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = kid_shouting_1.caf; sourceTree = "<group>"; };
 		20BC29B02F01015800ABE913 /* kid_shouting_2.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = kid_shouting_2.caf; sourceTree = "<group>"; };
 		20BEF3C92F0CA0EE0059D190 /* reveille.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = reveille.caf; sourceTree = "<group>"; };
+		20CD77D02F26004300535720 /* CustomSoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSoundManager.swift; sourceTree = "<group>"; };
+		20CD77D22F26005600535720 /* SoundSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSelectionView.swift; sourceTree = "<group>"; };
 		20DB18872F208ED7005B898A /* SchoolAlarmWidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SchoolAlarmWidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		20DB18892F208ED7005B898A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		20DB188B2F208ED7005B898A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		20DB18DD2F20A33F005B898A /* AlarmKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmKitManager.swift; sourceTree = "<group>"; };
+		20EDDF6E2F29648800A46C5D /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		A00000000000000000000001 /* SchoolAlarmApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolAlarmApp.swift; sourceTree = "<group>"; };
 		A00000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A00000000000000000000003 /* Alarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
@@ -190,6 +196,7 @@
 		D00000000000000000000005 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				20CD77D22F26005600535720 /* SoundSelectionView.swift */,
 				20366C782F21E150003AB342 /* DistrictSelectionView.swift */,
 				20366C792F21E150003AB342 /* OnboardingView.swift */,
 				A00000000000000000000008 /* AlarmEditView.swift */,
@@ -203,6 +210,8 @@
 		D00000000000000000000006 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				20EDDF6E2F29648800A46C5D /* DeepLinkManager.swift */,
+				20CD77D02F26004300535720 /* CustomSoundManager.swift */,
 				20366C7C2F21E15A003AB342 /* DistrictStore.swift */,
 				20DB18DD2F20A33F005B898A /* AlarmKitManager.swift */,
 				A00000000000000000000006 /* CalendarService.swift */,
@@ -369,10 +378,13 @@
 				20DB18DE2F20A33F005B898A /* AlarmKitManager.swift in Sources */,
 				20366C7A2F21E150003AB342 /* DistrictSelectionView.swift in Sources */,
 				20366C7B2F21E150003AB342 /* OnboardingView.swift in Sources */,
+				20EDDF6F2F29648800A46C5D /* DeepLinkManager.swift in Sources */,
 				A11111110000000000000010 /* CalendarView.swift in Sources */,
 				20366C7D2F21E15A003AB342 /* DistrictStore.swift in Sources */,
 				A11111110000000000000012 /* OverrideModels.swift in Sources */,
+				20CD77D12F26004300535720 /* CustomSoundManager.swift in Sources */,
 				A11111110000000000000013 /* OverrideStore.swift in Sources */,
+				20CD77D32F26005600535720 /* SoundSelectionView.swift in Sources */,
 				A11111110000000000000014 /* WeeklyRuleEditView.swift in Sources */,
 				A11111110000000000000015 /* DateOverrideEditView.swift in Sources */,
 			);
