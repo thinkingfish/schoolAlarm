@@ -12,6 +12,10 @@ class AlarmKitManager: ObservableObject {
     /// Track scheduled alarm IDs by date for cancellation
     private var scheduledAlarmsByDate: [Date: UUID] = [:]
 
+    /// Prevents concurrent scheduling operations (race condition fix)
+    private var isScheduling = false
+    private var needsReschedule = false
+
     @Published var authorizationState: AlarmManager.AuthorizationState = .notDetermined
 
     private init() {
@@ -53,18 +57,36 @@ class AlarmKitManager: ObservableObject {
     ///   - schoolDays: List of upcoming school days from CalendarService
     ///   - overrideStore: Override store for effective time resolution
     ///   - baseAlarm: Base alarm configuration (sound, etc.)
+    @MainActor
     func scheduleAlarms(
         schoolDays: [Date],
         overrideStore: OverrideStore,
         baseAlarm: Alarm?
     ) async {
+        // Prevent concurrent scheduling - if already running, mark for reschedule
+        if isScheduling {
+            needsReschedule = true
+            return
+        }
+        isScheduling = true
+        defer {
+            isScheduling = false
+            // If another request came in while we were scheduling, run again
+            if needsReschedule {
+                needsReschedule = false
+                Task {
+                    await scheduleAlarms(schoolDays: schoolDays, overrideStore: overrideStore, baseAlarm: baseAlarm)
+                }
+            }
+        }
+
         // Cancel all existing alarms first (including orphaned ones)
         await cancelAllAlarms()
 
         guard overrideStore.allAlarmsEnabled else { return }
 
         let calendar = Calendar.current
-        let soundName = baseAlarm?.alarmSoundName ?? Alarm.BundledSound.funnyRing.rawValue
+        let soundName = baseAlarm?.alarmSoundName ?? "funny_ring.caf"
 
         for schoolDay in schoolDays {
             // Get effective alarm time using override resolution
