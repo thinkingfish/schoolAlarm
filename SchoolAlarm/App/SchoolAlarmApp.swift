@@ -11,6 +11,9 @@ struct SchoolAlarmApp: App {
     @StateObject private var deepLinkManager = DeepLinkManager.shared
     @Environment(\.scenePhase) private var scenePhase
 
+    /// Track last reschedule to avoid redundant work
+    @AppStorage("lastAlarmReschedule") private var lastRescheduleTimestamp: Double = 0
+
     init() {
         DeepLinkManager.shared.setupNotificationDelegate()
     }
@@ -32,13 +35,13 @@ struct SchoolAlarmApp: App {
                                     await calendarService.loadCalendar(for: district)
                                     scheduleHolidayReminder(district: district)
                                 }
-                                rescheduleAlarms()
+                                rescheduleAlarmsIfNeeded(force: true)
                             }
                         }
                         .onChange(of: scenePhase) { _, newPhase in
                             if newPhase == .active {
                                 clearBadgeCount()
-                                rescheduleAlarms()
+                                rescheduleAlarmsIfNeeded(force: false)
                             }
                         }
                 } else {
@@ -51,8 +54,27 @@ struct SchoolAlarmApp: App {
         }
     }
 
-    private func rescheduleAlarms() {
+    /// Reschedule alarms only if needed (throttled to reduce memory churn)
+    /// - Parameter force: If true, always reschedule (used on cold start)
+    private func rescheduleAlarmsIfNeeded(force: Bool) {
         guard let district = districtStore.selectedDistrict else { return }
+
+        let now = Date()
+        let lastReschedule = Date(timeIntervalSince1970: lastRescheduleTimestamp)
+
+        // Skip if we rescheduled recently (within 1 hour) and it's the same day
+        if !force {
+            let hoursSinceReschedule = now.timeIntervalSince(lastReschedule) / 3600
+            let calendar = Calendar.current
+            let sameDay = calendar.isDate(now, inSameDayAs: lastReschedule)
+
+            if hoursSinceReschedule < 1 && sameDay {
+                return
+            }
+        }
+
+        lastRescheduleTimestamp = now.timeIntervalSince1970
+
         AlarmKitManager.shared.rescheduleAllAlarms(
             alarmStore: alarmStore,
             calendarService: calendarService,
@@ -71,9 +93,7 @@ struct SchoolAlarmApp: App {
         guard let holiday = calendarService.nextHoliday(district: district) else { return }
 
         // Format the date
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d"
-        let dateString = formatter.string(from: holiday.startDate)
+        let dateString = Formatters.monthDay.string(from: holiday.startDate)
 
         // Create notification content
         let content = UNMutableNotificationContent()

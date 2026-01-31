@@ -212,9 +212,7 @@ struct CalendarView: View {
     }
 
     private var monthYearString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM yyyy"
-        return formatter.string(from: currentMonth)
+        Formatters.monthYear.string(from: currentMonth)
     }
 
     private var daysInMonth: [Date?] {
@@ -268,10 +266,7 @@ struct CalendarView: View {
     }
 
     private var lastUpdatedFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        formatter.timeStyle = .short
-        return formatter
+        Formatters.dateTimeShort
     }
 }
 
@@ -291,9 +286,7 @@ struct DayCellWithOverride: View {
     let onTap: () -> Void
 
     private var dayNumber: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "d"
-        return formatter.string(from: date)
+        Formatters.dayNumber.string(from: date)
     }
 
     var body: some View {
@@ -470,9 +463,6 @@ struct UpcomingHolidaysSection: View {
     }
 
     private func formatDateRange(_ event: SchoolCalendarEvent) -> String {
-        let startFormatter = DateFormatter()
-        startFormatter.dateFormat = "MMM d"
-
         // For all-day events, end date is exclusive, so subtract one day for display
         let displayEndDate: Date
         if event.isAllDay {
@@ -486,19 +476,20 @@ struct UpcomingHolidaysSection: View {
         let endDay = calendar.startOfDay(for: displayEndDate)
 
         if startDay == endDay {
-            return startFormatter.string(from: event.startDate)
+            return Formatters.monthDay.string(from: event.startDate)
         } else {
             // Multi-day event - show range
-            let endFormatter = DateFormatter()
+            let startString = Formatters.monthDay.string(from: event.startDate)
 
             // If same month, only show day for end date
+            let endString: String
             if calendar.component(.month, from: event.startDate) == calendar.component(.month, from: displayEndDate) {
-                endFormatter.dateFormat = "d"
+                endString = Formatters.dayNumber.string(from: displayEndDate)
             } else {
-                endFormatter.dateFormat = "MMM d"
+                endString = Formatters.monthDay.string(from: displayEndDate)
             }
 
-            return "\(startFormatter.string(from: event.startDate)) - \(endFormatter.string(from: displayEndDate))"
+            return "\(startString) - \(endString)"
         }
     }
 }

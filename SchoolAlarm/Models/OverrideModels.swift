@@ -18,9 +18,7 @@ enum OverrideAction: Codable, Equatable {
 
     var timeString: String? {
         guard case .customTime(let date) = self else { return nil }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        return formatter.string(from: date)
+        return Formatters.time.string(from: date)
     }
 }
 
@@ -31,21 +29,17 @@ struct WeeklyRule: Codable, Identifiable, Equatable {
     var action: OverrideAction
 
     var weekdayName: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE"
         var components = DateComponents()
         components.weekday = weekday
         let date = Calendar.current.nextDate(after: Date(), matching: components, matchingPolicy: .nextTime)!
-        return formatter.string(from: date)
+        return Formatters.weekday.string(from: date)
     }
 
     var shortWeekdayName: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE"
         var components = DateComponents()
         components.weekday = weekday
         let date = Calendar.current.nextDate(after: Date(), matching: components, matchingPolicy: .nextTime)!
-        return formatter.string(from: date)
+        return Formatters.weekdayShort.string(from: date)
     }
 }
 
@@ -56,8 +50,6 @@ struct DateOverride: Codable, Identifiable, Equatable {
     var action: OverrideAction
 
     var dateString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE, MMM d"
-        return formatter.string(from: date)
+        Formatters.shortDate.string(from: date)
     }
 }

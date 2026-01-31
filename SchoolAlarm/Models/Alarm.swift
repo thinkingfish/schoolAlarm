@@ -19,15 +19,11 @@ struct Alarm: Identifiable, Codable, Equatable {
     }
 
     var timeString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm"
-        return formatter.string(from: time)
+        Formatters.timeShort.string(from: time)
     }
 
     var periodString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "a"
-        return formatter.string(from: time)
+        Formatters.period.string(from: time)
     }
 
     static func defaultAlarm() -> Alarm {

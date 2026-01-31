@@ -278,16 +278,12 @@ struct NextAlarmSection: View {
         } else if calendar.isDateInTomorrow(date) {
             return "Tomorrow"
         } else {
-            let formatter = DateFormatter()
-            formatter.dateFormat = "EEEE, MMM d"
-            return formatter.string(from: date)
+            return Formatters.weekdayMonthDay.string(from: date)
         }
     }
 
     private func formatTime(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        return formatter.string(from: date)
+        Formatters.time.string(from: date)
     }
 
     private func layerColor(_ layer: AlarmLayer) -> Color {

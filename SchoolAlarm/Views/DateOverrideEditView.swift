@@ -98,9 +98,7 @@ struct SchoolDayDatePicker: View {
     }
 
     private var monthYearString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM yyyy"
-        return formatter.string(from: currentMonth)
+        Formatters.monthYear.string(from: currentMonth)
     }
 
     private var daysInMonth: [Date?] {
@@ -152,9 +150,7 @@ struct SchoolDayCell: View {
     let onTap: () -> Void
 
     private var dayNumber: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "d"
-        return formatter.string(from: date)
+        Formatters.dayNumber.string(from: date)
     }
 
     private var isSelectable: Bool {
@@ -395,9 +391,7 @@ struct DateOverrideEditView: View {
     }
 
     private var dateString: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE, MMM d, yyyy"
-        return formatter.string(from: selectedDate)
+        Formatters.fullDate.string(from: selectedDate)
     }
 
     private func saveOverride() {

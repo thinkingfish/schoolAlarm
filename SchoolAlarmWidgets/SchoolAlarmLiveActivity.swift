@@ -3,6 +3,22 @@ import WidgetKit
 import ActivityKit
 import AlarmKit
 
+// MARK: - Cached Formatters (avoid allocation during render)
+
+private enum WidgetFormatters {
+    static let time: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "h:mm a"
+        return f
+    }()
+
+    static let timeShort: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "h:mm"
+        return f
+    }()
+}
+
 /// Alarm alert view shown on lock screen when alarm fires
 struct AlarmAlertView: View {
     var body: some View {
@@ -28,9 +44,7 @@ struct AlarmAlertView: View {
     }
 
     private func formattedTime() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        return formatter.string(from: Date())
+        WidgetFormatters.time.string(from: Date())
     }
 }
 
@@ -70,8 +84,6 @@ struct SchoolAlarmLiveActivity: Widget {
     }
 
     private func formattedCompactTime() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm"
-        return formatter.string(from: Date())
+        WidgetFormatters.timeShort.string(from: Date())
     }
 }
