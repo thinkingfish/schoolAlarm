@@ -1,4 +1,4 @@
-![SchoolAlarm Logo](assets/SchoolAlarm.png)
+![SchoolAlarm Logo](assets/SchoolAlarm-480.png)
 
 # SchoolAlarm
 

@@ -26,10 +26,10 @@ School Alarm automatically syncs with your school district's calendar to skip al
 
 **Perfect for:**
 
-- People who don't want to remember to turn off the alarm on Sunday night
-- Families with multiple kids or variable morning routines
+- People who hate waking up early on Monday only to remember it was a school holiday
+- Families juggling multiple morning routines
 
-Thanks to the new AlarmKit in iOS 26, this app works like the native Clock app but with more flexiblity. More school districts may be added in the future if there's demand.
+Thanks to the new AlarmKit in iOS 26, this app works like the native Clock app, just better tailored for families with school-age kids and a tad more flexiblity. More school districts could be added in the future if there's demand.
 
 ## Keywords
 
@@ -49,4 +49,4 @@ https://github.com/thinkingfish/schoolAlarm/blob/main/PRIVACY.md
 
 ## Support URL
 
-For bugs and feature requests, use GitHub: https://github.com/thinkingfish/schoolAlarm/issues
+For bugs and feature requests, use GitHub: https://github.com/thinkingfish/schoolAlarm/issues or email: schoolAlarm@yaoyue.org
