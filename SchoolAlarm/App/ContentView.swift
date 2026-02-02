@@ -440,6 +440,7 @@ struct WeeklyRulesSection: View {
                         .font(.title2)
                         .foregroundColor(.blue)
                 }
+                .disabled(overrideStore.weeklyRules.count >= 5)
             }
 
             if overrideStore.weeklyRules.isEmpty {
