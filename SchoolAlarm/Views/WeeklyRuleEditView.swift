@@ -75,9 +75,8 @@ struct WeeklyRuleEditView: View {
             // In edit mode, only show the current weekday
             return weekdays.filter { $0.0 == rule.weekday }
         }
-        // In add mode, filter out weekdays that already have rules
-        let existingWeekdays = Set(overrideStore.weeklyRules.map { $0.weekday })
-        return weekdays.filter { !existingWeekdays.contains($0.0) }
+        // In add mode, show all weekdays (multiple rules per day allowed)
+        return weekdays
     }
 
     var body: some View {
@@ -89,17 +88,12 @@ struct WeeklyRuleEditView: View {
                     // Weekday picker (only in add mode or if editing)
                     if case .add = mode {
                         Section {
-                            if availableWeekdays.isEmpty {
-                                Text("All weekdays already have rules")
-                                    .foregroundColor(.gray)
-                            } else {
-                                Picker("Day", selection: $selectedWeekday) {
-                                    ForEach(availableWeekdays, id: \.0) { weekday in
-                                        Text(weekday.1).tag(weekday.0)
-                                    }
+                            Picker("Day", selection: $selectedWeekday) {
+                                ForEach(availableWeekdays, id: \.0) { weekday in
+                                    Text(weekday.1).tag(weekday.0)
                                 }
-                                .pickerStyle(.menu)
                             }
+                            .pickerStyle(.menu)
                         } header: {
                             Text("WEEKDAY")
                                 .foregroundColor(.blue)
