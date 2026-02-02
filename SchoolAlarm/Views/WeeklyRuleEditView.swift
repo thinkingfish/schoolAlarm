@@ -30,6 +30,7 @@ struct WeeklyRuleEditView: View {
     @State private var selectedWeekday: Int
     @State private var actionType: ActionType = .customTime
     @State private var selectedTime: Date
+    @State private var availableWeekdays: [(Int, String)]
 
     enum ActionType {
         case disable
@@ -49,8 +50,17 @@ struct WeeklyRuleEditView: View {
         self.onSave = onSave
         self.onDelete = onDelete
 
+        let weekdays = [
+            (2, "Monday"),
+            (3, "Tuesday"),
+            (4, "Wednesday"),
+            (5, "Thursday"),
+            (6, "Friday")
+        ]
+
         if let rule = mode.rule {
             _selectedWeekday = State(initialValue: rule.weekday)
+            _availableWeekdays = State(initialValue: weekdays.filter { $0.0 == rule.weekday })
             switch rule.action {
             case .disable:
                 _actionType = State(initialValue: .disable)
@@ -63,21 +73,13 @@ struct WeeklyRuleEditView: View {
             // Find first available weekday that doesn't already have a rule
             let allWeekdays = [2, 3, 4, 5, 6]  // Monday-Friday
             let existingWeekdays = Set(overrideStore.weeklyRules.map { $0.weekday })
+            let available = weekdays.filter { !existingWeekdays.contains($0.0) }
             let firstAvailable = allWeekdays.first { !existingWeekdays.contains($0) } ?? 2
             _selectedWeekday = State(initialValue: firstAvailable)
+            _availableWeekdays = State(initialValue: available)
             _actionType = State(initialValue: .customTime)
             _selectedTime = State(initialValue: Calendar.current.date(from: DateComponents(hour: 7, minute: 45)) ?? Date())
         }
-    }
-
-    private var availableWeekdays: [(Int, String)] {
-        if case .edit(let rule) = mode {
-            // In edit mode, only show the current weekday
-            return weekdays.filter { $0.0 == rule.weekday }
-        }
-        // In add mode, filter out weekdays that already have rules
-        let existingWeekdays = Set(overrideStore.weeklyRules.map { $0.weekday })
-        return weekdays.filter { !existingWeekdays.contains($0.0) }
     }
 
     var body: some View {
