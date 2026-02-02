@@ -89,12 +89,17 @@ struct WeeklyRuleEditView: View {
                     // Weekday picker (only in add mode or if editing)
                     if case .add = mode {
                         Section {
-                            Picker("Day", selection: $selectedWeekday) {
-                                ForEach(availableWeekdays, id: \.0) { weekday in
-                                    Text(weekday.1).tag(weekday.0)
+                            if availableWeekdays.isEmpty {
+                                Text("All weekdays already have rules")
+                                    .foregroundColor(.gray)
+                            } else {
+                                Picker("Day", selection: $selectedWeekday) {
+                                    ForEach(availableWeekdays, id: \.0) { weekday in
+                                        Text(weekday.1).tag(weekday.0)
+                                    }
                                 }
+                                .pickerStyle(.menu)
                             }
-                            .pickerStyle(.menu)
                         } header: {
                             Text("WEEKDAY")
                                 .foregroundColor(.blue)
