@@ -17,7 +17,7 @@ School Alarm automatically syncs with your school district's calendar to skip al
 **Features:**
 
 - Automatic holiday detection - alarms skip on school holidays and breaks
-- Calendar sync - currently syncs with San Francisco/Oakland/Fremont Unified School District calendars
+- Calendar sync - currently syncs with San Francisco and Berkeley Unified School District calendars
 - Custom alarm sounds - choose from built-in sounds or import your own
 - Weekly schedule rules - set different times for different days (e.g. early Tuesday gym practice, late-start Friday)
 - One-time overrides - skip or reschedule individual days
@@ -33,7 +33,7 @@ Thanks to the new AlarmKit in iOS 26, this app works like the native Clock app, 
 
 ## Keywords
 
-alarm,school,wake,student,parent,calendar,SFUSD,OUSD,FUSD,morning,schedule,kids
+alarm,school,wake,student,parent,calendar,SFUSD,BUSD,morning,schedule,kids
 
 ## Category
 

@@ -4,8 +4,8 @@
     "name": "San Francisco Unified School District",
     "shortName": "SFUSD",
     "calendarURL": "https://calendar.google.com/calendar/ical/sfusd.edu_bqjal71qaoocvnuspm9vl4qnuo%40group.calendar.google.com/public/basic.ics",
-    "schoolYearStart": { "month": 8, "day": 18 },
-    "schoolYearEnd": { "month": 6, "day": 3 },
+    "schoolYearStart": { "month": 8, "day": 17 },
+    "schoolYearEnd": { "month": 6, "day": 2 },
     "timezone": "America/Los_Angeles"
   },
   {
@@ -13,17 +13,8 @@
     "name": "Berkeley Unified School District",
     "shortName": "BUSD",
     "calendarURL": "https://calendar.google.com/calendar/ical/calendar%40berkeley.net/public/basic.ics",
-    "schoolYearStart": { "month": 8, "day": 13 },
-    "schoolYearEnd": { "month": 6, "day": 4 },
-    "timezone": "America/Los_Angeles"
-  },
-  {
-    "id": "fremont",
-    "name": "Fremont Unified School District",
-    "shortName": "Fremont USD",
-    "calendarURL": "https://calendar.google.com/calendar/ical/fusdk12.net_uc7a3vpai2lugqeb32o30tr3c8%40group.calendar.google.com/public/basic.ics",
     "schoolYearStart": { "month": 8, "day": 12 },
-    "schoolYearEnd": { "month": 6, "day": 2 },
+    "schoolYearEnd": { "month": 6, "day": 3 },
     "timezone": "America/Los_Angeles"
   }
 ]
