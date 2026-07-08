@@ -9,8 +9,6 @@ A smart alarm clock app for Bay Area school families. The app automatically sche
 - **SFUSD** - San Francisco Unified School District
 - **BUSD** - Berkeley Unified School District
 
-_Fremont USD is supported by the codebase but held from release until FUSD publishes its 2026-27 instructional calendar to a machine-readable feed._
-
 <p align="center">
   <img src="assets/main.png" width="45%" alt="Main View">
   <img src="assets/calendar.png" width="45%" alt="Calendar View">
